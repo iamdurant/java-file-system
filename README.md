@@ -1,6 +1,7 @@
 # java-file-system
 java文件管理系统，存储使用minio，用到redis
 
+- **前端**：纯html、css、javascript
 - **后端**：java-spring-boot
 - **存储**：minio
 - **中间应用**：redis
