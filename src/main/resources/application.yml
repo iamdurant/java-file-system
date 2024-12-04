@@ -1,0 +1,21 @@
+server:
+  port: 7654
+
+spring:
+  servlet:
+    # 上传大小匹配
+    multipart:
+      max-file-size: 1TB
+      max-request-size: 1TB
+  # redis 配置
+  redis:
+    host: 192.168.1.101
+    password: pubgM666
+    port: 6379
+    database: 2
+
+# minio 配置
+minio:
+  endpoint: http://192.168.1.101:9000
+  access-key: BdsOyQdaT1cMM6lojeoC
+  secret-key: Pxd2Dkp9XC1MQ5lRxc3cKuVm8AyKnoOapcSIGZea
