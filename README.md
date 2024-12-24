@@ -1,17 +1,26 @@
 # java-file-system
-java文件管理系统，存储使用minio，用到redis
+java文件管理系统，一站式地管理自己的各种资源：图片、视频、压缩包、文档、音乐等等。
 
-- **前端**：纯html、css、javascript
-- **后端**：java-spring-boot
-- **存储**：minio
-- **中间应用**：redis
+### 技术栈
+- spring-boot
+- redis
+- minio
 
 ### 功能
 - 文件的上传，下载
 - 支持文件夹，文件夹的创建与删除
 - 支持预览视频
+- 预览图片
+- 预览文本
 - 支持markdown预览
+- 文件搜索
 - 微型音频播放器
+
+### 效果
+| ![image](https://github.com/user-attachments/assets/3e3d80d5-8dc9-49a6-b3b9-e7f902aa2553) | ![image](https://github.com/user-attachments/assets/07219605-5e29-4504-a6c4-551a86f306f8) | ![image](https://github.com/user-attachments/assets/dc9ca1b0-1118-4c4f-9756-ca40f119e8c4) |
+| ---- | ---- | ---- |
+| ![image](https://github.com/user-attachments/assets/442864ac-cac0-43c0-9178-7e8ca8cddfa8) | ![image](https://github.com/user-attachments/assets/3566c46c-7da3-44c0-a000-104fcbdac968) | ![image](https://github.com/user-attachments/assets/fc92b218-e246-4498-8442-e99ca3a36281) |
+
 
 ### 配置
 1. 部署minio(linux)
@@ -47,10 +56,3 @@ minio:
 ```
 4. 将resources/static/目录下的所有js中的ip改为你的ip：
    *ctrl + F 搜索192.168.1.101 替换为 你的ip*
-
-### 本人用途
-1. java课程设计作业
-2. 凑合能用，跑在废弃的小米8-linux-deploy上，存储各种废料
-
-### 演示视频
-[演示视频](https://github.com/user-attachments/assets/297a11fe-beb6-4927-b00b-1525d4754d43)
