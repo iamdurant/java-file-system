@@ -2,27 +2,23 @@
 function getFileType(fileName) {
     const extension = fileName.split('.').pop().toLowerCase();
     
-    // 定义支持的文件类型
-    const supportedTypes = {
-        // 图片类型
-        image: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'],
-        // 视频类型 
-        video: ['mp4', 'webm', 'ogg', 'mkv'],
-        // 音频类型
-        audio: ['mp3', 'wav', 'ogg', 'm4a', 'flac'],
-        // 文本类型
-        text: ['txt', 'json', 'js', 'css', 'html', 'xml', 'yaml', 'yml'],
-        // Markdown类型
-        markdown: ['md', 'markdown']
-    };
-
-    // 判断文件类型
-    for (const [type, extensions] of Object.entries(supportedTypes)) {
-        if (extensions.includes(extension)) {
-            return type;
-        }
+    // 文本文件类型扩展
+    const textExtensions = ['txt', 'log', 'json', 'xml', 'html', 'css', 'js', 'java', 'py', 'c', 'cpp', 'sql', 'ini', 'conf'];
+    
+    if (textExtensions.includes(extension)) {
+        return 'text';
+    } else if (extension === 'md' || extension === 'markdown') {
+        return 'markdown';
+    } else if (extension === 'pdf') {
+        return 'pdf';
+    } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) {
+        return 'image';
+    } else if (['mp4', 'webm', 'ogg', 'mkv'].includes(extension)) {
+        return 'video';
+    } else if (['mp3', 'wav', 'ogg', 'flac', 'm4a'].includes(extension)) {
+        return 'audio';
     }
-
+    
     return 'unsupported';
 }
 
@@ -65,6 +61,13 @@ async function handleFileClick(file) {
         switch (fileType) {
             case 'markdown':
                 showMarkdownPreview(fileUrl, file.name);
+                break;
+            case 'text':
+                showTextPreview(fileUrl, file.name);
+                break;
+            case 'pdf':
+                // 在新标签页打开PDF
+                window.open(fileUrl, '_blank');
                 break;
             case 'video':
                 showVideoPreview(fileUrl, file.name);
@@ -656,4 +659,49 @@ function removeNotification(id) {
     if (notification) {
         notification.remove();
     }
+}
+
+// 添加文本文件预览函数
+async function showTextPreview(fileUrl, fileName) {
+    try {
+        const response = await fetch(fileUrl);
+        const text = await response.text();
+        
+        // 创建预览对话框
+        const dialog = document.createElement('div');
+        dialog.className = 'preview-dialog';
+        dialog.innerHTML = `
+            <div class="preview-content">
+                <div class="preview-header">
+                    <h3>${fileName}</h3>
+                    <button class="close-button" onclick="this.closest('.preview-dialog').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="preview-body">
+                    <pre class="text-content">${escapeHtml(text)}</pre>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        // 添加ESC键关闭功能
+        dialog.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                dialog.remove();
+            }
+        });
+        
+    } catch (error) {
+        console.error('预览文件失败:', error);
+        notifications.show('预览文件失败', 'error');
+    }
+}
+
+// 添加HTML转义函数
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }

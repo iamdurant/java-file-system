@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/file")
 @RequiredArgsConstructor
 @Slf4j
-@Api(tags = {"接口大全"})
+@Api(tags = {"文件相关接口"})
 public class FileController {
     private final FileService service;
 
@@ -94,5 +94,12 @@ public class FileController {
     @ApiOperation("移除bucket")
     public Result removeBucket(@RequestParam String bucketName) {
         return service.removeBucket(bucketName);
+    }
+
+    @PostMapping("/renameBucket")
+    @ApiOperation("重命名bucket")
+    public Result renameBucket(@RequestParam String bucketName,
+                                @RequestParam String newName) {
+        return service.renameBucket(bucketName, newName);
     }
 }

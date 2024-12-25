@@ -1,12 +1,15 @@
 package com.file.service.impl;
 
+import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
 import com.file.pojo.FileObj;
 import com.file.pojo.RemoveFileDTO;
 import com.file.pojo.UrlDTO;
 import com.file.service.FileService;
+import com.file.util.DatetimeUtil;
 import com.file.util.FileUtil;
 import io.minio.*;
+import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
@@ -18,10 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -31,6 +36,8 @@ public class FileServiceImpl implements FileService {
     private final MinioClient cli;
 
     private final StringRedisTemplate redis;
+
+    private final FileUploadThreadPool pool;
 
     @Override
     @SneakyThrows
@@ -86,9 +93,7 @@ public class FileServiceImpl implements FileService {
                 obj.setSize(item.size());
 
                 // 设置时间
-                ZonedDateTime zonedDateTime = item.lastModified();
-                String datetime = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                obj.setDatetime(datetime);
+                obj.setDatetime(DatetimeUtil.format(item.lastModified()));
             }
             re.add(obj);
         }
@@ -104,23 +109,33 @@ public class FileServiceImpl implements FileService {
             cli.makeBucket(MakeBucketArgs.builder().bucket(fileObj.getBucketName()).build());
         }
 
+        CountDownLatch latch = new CountDownLatch(files.size());
         for (MultipartFile file : files) {
-            // 正确设置路径
-            String prefix = fileObj.getPrefix();
-            String fileName;
-            if (!prefix.contains("/")) fileName = file.getOriginalFilename();
-            else fileName = prefix + file.getOriginalFilename();
+            pool.submitTask(() -> {
+                // 正确设置路径
+                String prefix = fileObj.getPrefix();
+                String fileName;
+                if (!prefix.contains("/")) fileName = file.getOriginalFilename();
+                else fileName = prefix + file.getOriginalFilename();
 
-            cli.putObject(
-                    PutObjectArgs
-                            .builder()
-                            .bucket(fileObj.getBucketName())
-                            .object(fileName)
-                            .contentType(file.getContentType())
-                            .stream(file.getInputStream(), file.getSize(), -1)
-                            .build());
+                try {
+                    cli.putObject(
+                            PutObjectArgs
+                                    .builder()
+                                    .bucket(fileObj.getBucketName())
+                                    .object(fileName)
+                                    .contentType(file.getContentType())
+                                    .stream(file.getInputStream(), file.getSize(), -1)
+                                    .build());
+                } catch (Exception e) {
+                    latch.countDown();
+                    throw new RuntimeException(e);
+                }
+                latch.countDown();
+            });
         }
 
+        latch.await();
         return true;
     }
 
@@ -198,6 +213,9 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public Boolean createArchive(FileObj fileObj) {
+        if(fileObj.getBucketName() == null || fileObj.getBucketName().isEmpty())
+            return false;
+
         cli.putObject(PutObjectArgs.builder()
                 .bucket(fileObj.getBucketName())
                 .object(fileObj.getPrefix() + FileConstant.DIR_HELP)
@@ -264,6 +282,22 @@ public class FileServiceImpl implements FileService {
         redis.delete(bucketName);
         String s = redis.opsForValue().get(fakeName);
         if(s != null) redis.delete(fakeName);
+
+        return com.file.common.Result.ok();
+    }
+
+    @Override
+    public com.file.common.Result renameBucket(String bucketName, String newName) {
+        String oldName = redis.opsForValue().get(bucketName);
+        if(oldName == null) return com.file.common.Result.fail("存储桶不存在");
+
+        String newNameExisted = redis.opsForValue().get(newName);
+        if(newNameExisted != null) return com.file.common.Result.fail("此名称已被使用");
+
+        redis.delete(oldName);
+        redis.delete(bucketName);
+        redis.opsForValue().set(bucketName, newName);
+        redis.opsForValue().set(newName, "1");
 
         return com.file.common.Result.ok();
     }

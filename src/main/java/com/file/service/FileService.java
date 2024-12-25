@@ -28,7 +28,7 @@ public interface FileService {
 
     /**
      * 上传文件
-     * @param file 文件数据
+     * @param
      * @return
      */
     Boolean uploadFile(List<MultipartFile> files, FileObj fileObj);
@@ -61,10 +61,17 @@ public interface FileService {
 
     /**
      * 移除bucket
-     * @param fileObj
+     * @param
      * @return
      */
     Result removeBucket(String bucketName);
 
     String getFileUrl(UrlDTO dto);
+
+    /**
+     * 重命名bucket
+     * @param bucketName
+     * @return
+     */
+    Result renameBucket(String bucketName, String newName);
 }

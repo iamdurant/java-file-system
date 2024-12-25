@@ -4,14 +4,412 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnoCloud</title>
+    <link rel="icon" type="image/svg+xml" href="svg/cloud.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="svg/cloud.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Logo 样式 */
+        .logo-container {
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* 修改路径导航器样式 */
+        .path-navigator {
+            height: var(--header-height);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* 调整路径内容容器样式 */
+        .path-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* 搜索框容器样式 */
+        .search-container {
+            position: relative;
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        /* 搜索输入框样式 */
+        .search-input {
+            padding: 6px 32px 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 14px;
+            width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: right center;
+        }
+
+        /* 搜索框悬停效果 */
+        .search-input:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 搜索框获得焦点时的效果 */
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+            width: 240px; /* 展开效果 */
+            transform: scale(1.02); /* 轻微放大效果 */
+        }
+
+        /* 搜索图标样式 */
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            color: var(--text-secondary-color);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        /* 清除按钮样式 */
+        .search-clear {
+            position: absolute;
+            right: 30px;  /* 位于搜索图标左侧 */
+            color: var(--text-secondary-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px;
+            opacity: 0;  /* 默认隐藏 */
+            pointer-events: none;  /* 默认不可点击 */
+            transition: all 0.2s ease;
+        }
+
+        /* 当搜索框有内容时显示清除按钮 */
+        .search-container.has-value .search-clear {
+            opacity: 0.6;
+            pointer-events: auto;
+        }
+
+        /* 清除按钮悬停效果 */
+        .search-clear:hover {
+            opacity: 1;
+        }
+
+        /* 搜索框获得焦点时图标效果 */
+        .search-input:focus + .search-icon {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* 深色模式适配 */
+        [data-theme='dark'] .search-input {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* 添加搜索框的占位符文本样式 */
+        .search-input::placeholder {
+            color: var(--text-secondary-color);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 搜索框获得焦点时占位符文本效果 */
+        .search-input:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        /* 文本预览样式 */
+        .preview-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .preview-dialog .preview-content {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 80%;
+            max-width: 1000px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-dialog .preview-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-dialog .preview-body {
+            flex: 1;
+            overflow: auto;
+            padding: 16px;
+        }
+
+        .text-content {
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-y: auto;
+        }
+
+        /* 适配深色模式 */
+        [data-theme='dark'] .text-content {
+            background-color: var(--bg-secondary);
+            color: var(--text-color);
+        }
+
+        /* 关闭按钮样式 */
+        .preview-dialog .close-button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            font-size: 16px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .preview-dialog .close-button:hover {
+            opacity: 1;
+        }
+
+        /* 搜索结果容器 */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            margin-top: 4px;
+        }
+
+        /* 搜索结果项 */
+        .search-result-item {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        /* 搜索结果名称 */
+        .result-name {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        /* 高亮匹配文本 */
+        .result-name em {
+            font-style: normal;
+            background-color: rgba(82, 82, 255, 0.2);
+            color: var(--text-color);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 深色主题下的高亮样式 */
+        [data-theme='dark'] .result-name em {
+            background-color: rgba(82, 82, 255, 0.3);
+            color: var(--text-color);
+        }
+
+        /* 搜索结果信息 */
+        .result-info {
+            font-size: 12px;
+            color: var(--text-secondary-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        /* 无结果提示 */
+        .no-results {
+            padding: 12px;
+            text-align: center;
+            color: var(--text-secondary-color);
+        }
+
+        /* 文件高亮效果 */
+        .file-item.highlight {
+            background-color: rgba(82, 82, 255, 0.1);
+            animation: highlight-pulse 2s ease-out;
+        }
+
+        /* 深色主题下的文件高亮效果 */
+        [data-theme='dark'] .file-item.highlight {
+            background-color: rgba(82, 82, 255, 0.2);
+        }
+
+        @keyframes highlight-pulse {
+            0% { background-color: rgba(82, 82, 255, 0.2); }
+            50% { background-color: rgba(82, 82, 255, 0.1); }
+            100% { background-color: transparent; }
+        }
+
+        /* 深色主题下的高亮动画 */
+        [data-theme='dark'] .file-item.highlight {
+            animation: highlight-pulse-dark 2s ease-out;
+        }
+
+        @keyframes highlight-pulse-dark {
+            0% { background-color: rgba(82, 82, 255, 0.3); }
+            50% { background-color: rgba(82, 82, 255, 0.2); }
+            100% { background-color: transparent; }
+        }
+
+        /* 固定在顶部的高亮文件 */
+        .highlight-sticky {
+            background-color: rgba(82, 82, 255, 0.1) !important;
+            position: relative;  /* 为伪元素定位 */
+        }
+
+        /* 深色主题下的固定高亮 */
+        [data-theme='dark'] .highlight-sticky {
+            background-color: rgba(82, 82, 255, 0.2) !important;
+        }
+
+        /* 添加搜索结果标记 - 使用伪元素 */
+        .highlight-sticky td:last-child {
+            position: relative;  /* 为伪元素定位 */
+            padding-right: 80px !important;  /* 为标记留出空间 */
+        }
+
+        .highlight-sticky td:last-child::after {
+            content: '搜索结果';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: var(--primary-color);
+            background-color: rgba(82, 82, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* 深色主题下的标记样式 */
+        [data-theme='dark'] .highlight-sticky td:last-child::after {
+            background-color: rgba(82, 82, 255, 0.2);
+        }
+
+        /* 确保高亮行内的所有单元格都有相同的背景色 */
+        .highlight-sticky td {
+            background-color: rgba(82, 82, 255, 0.1) !important;
+        }
+
+        /* 存储桶图标容器 */
+        .bucket-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+
+        .bucket-icon img {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .bucket-item:hover .bucket-icon img {
+            transform: scale(1.1);
+        }
+
+        /* 存储桶名称容器 */
+        .bucket-name-container {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* 主题切换按钮样式 */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-color);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+            transform: rotate(30deg);
+        }
+
+        .theme-toggle img {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover img {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <!-- 左侧导航栏 -->
         <div class="sidebar">
             <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="svg/cloud.svg" alt="AnoCloud Logo" class="logo">
+                </div>
                 <div class="sidebar-title">
                     <div class="sidebar-title-left">
                         <h2>存储桶</h2>
@@ -20,7 +418,7 @@
                         </button>
                     </div>
                     <button id="themeToggle" class="theme-toggle" title="切换主题">
-                        <i class="fas fa-moon"></i>
+                        <img src="svg/sun.svg" alt="Theme" style="width: 16px; height: 16px;">
                     </button>
                 </div>
             </div>
@@ -34,6 +432,13 @@
                     <span class="bucket-name" id="currentBucketDisplay">未选择存储桶</span>
                     <i class="fas fa-chevron-right path-separator"></i>
                     <span class="current-path" id="currentPathDisplay">/</span>
+                </div>
+                
+                <!-- 将搜索框移动到这里 -->
+                <div class="search-container">
+                    <input type="text" id="fileSearchInput" placeholder="搜索文件..." class="search-input">
+                    <i class="fas fa-times search-clear" id="searchClear"></i>
+                    <i class="fas fa-search search-icon"></i>
                 </div>
             </div>
             
@@ -75,7 +480,7 @@
                         </tr>
                     </thead>
                     <tbody id="fileList">
-                        <!-- 文件列表将在这里动态生成 -->
+                        <!-- 文件列表将��这里动态生成 -->
                     </tbody>
                 </table>
             </div>
@@ -112,6 +517,11 @@
         </div>
     </div>
 
+    <!-- 在通知容器之前添加 -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- 通知容器 -->
     <div id="notificationContainer" class="notification-container"></div>
 
@@ -142,8 +552,11 @@
         </div>
     </div>
 
+    <!-- 在其他脚本之前引入 -->
+    <script type="module" src="utils/download.js"></script>
     <script src="main.js"></script>
     <script src="second.js"></script>
     <script src="preview.js"></script>
+    <script type="module" src="check_device.js"></script>
 </body>
 </html>

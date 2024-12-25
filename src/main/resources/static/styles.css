@@ -82,6 +82,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    flex-shrink: 0;
 }
 
 .sidebar-header {
@@ -170,16 +171,18 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding: 0 20px;
 }
 
 .path-navigator {
     height: var(--header-height);
-    padding: 0 20px;
+    padding: 0;
     display: flex;
     align-items: center;
     background-color: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
 }
 
 .path-content {
@@ -208,7 +211,7 @@ body {
 }
 
 .actions {
-    padding: 16px 20px;
+    padding: 16px 0;
     background-color: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -257,7 +260,7 @@ body {
 .file-list-container {
     flex: 1;
     overflow: auto;
-    padding: 0 20px;
+    padding: 0;
     background-color: var(--bg-primary);
     position: relative;
 }
@@ -479,16 +482,17 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 400px;
-    max-width: 90%;
-    width: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 300px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
     max-height: 90vh;
     overflow-y: auto;
 }
 
 .dialog-content h3 {
     margin: 0 0 16px 0;
+    font-size: 18px;
     color: var(--text-primary);
 }
 
@@ -497,7 +501,11 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    width: 100%;
+}
+
+.dialog-buttons .button {
+    padding: 6px 16px;
+    min-width: 80px;
 }
 
 /* 上传进度条样式 */
@@ -600,7 +608,6 @@ input[type="file"]:hover {
 .input-group {
     margin-bottom: 20px;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .input-group label {
@@ -618,8 +625,8 @@ input[type="file"]:hover {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     font-size: 14px;
-    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .input-group input[type="text"]:focus {
@@ -1546,26 +1553,26 @@ input[type="checkbox"]:indeterminate::after {
     font-size: 14px;
 }
 
-.menu-item.delete {
+.menu-item.delete-item {
     color: #dc3545;
 }
 
-.menu-item.delete i {
+.menu-item.delete-item i {
     color: #dc3545;
 }
 
-.menu-item.delete:hover {
+.menu-item.delete-item:hover {
     background-color: rgba(220, 53, 69, 0.1);
 }
 
 @keyframes menuFadeIn {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        transform: translateY(-10px);
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0);
     }
 }
 
@@ -1575,7 +1582,7 @@ input[type="checkbox"]:indeterminate::after {
     border-color: var(--border-dark);
 }
 
-[data-theme="dark"] .menu-item.delete:hover {
+[data-theme="dark"] .menu-item.delete-item:hover {
     background-color: rgba(255, 107, 107, 0.1);
 } 
 
@@ -1596,4 +1603,115 @@ input[type="checkbox"]:indeterminate::after {
     background-color: #4CAF50;
     border-radius: 2px;
     transition: width 0.3s ease;
+}
+
+/* 修改搜索加载动画样式 */
+.search-container.is-searching::after {
+    content: '';
+    position: absolute;
+    right: 60px; /* 修改位置到清除按钮左侧 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: search-spin 0.8s linear infinite;
+}
+
+@keyframes search-spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* 当搜索框处于加载状态时，调整清除按钮的位置 */
+.search-container.is-searching #searchClear {
+    right: 35px; /* 保持清除按钮在原位置 */
+}
+
+/* 搜索框有值时显示清除按钮 */
+.search-container.has-value #searchClear {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 同时有值且正在搜索时的样式 */
+.search-container.has-value.is-searching #searchClear {
+    right: 35px; /* 保持清除按钮在原位置 */
+}
+
+/* 添加加载状态的样式 */
+.loading-folder .file-item,
+.loading-folder .file-name {
+    pointer-events: none; /* 禁用点击 */
+    opacity: 0.7; /* 降低透明度表示禁用状态 */
+}
+
+/* 添加加载指示器 */
+.loading-folder .path-navigator::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: loading-spin 0.8s linear infinite;
+}
+
+@keyframes loading-spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* 路径导航器相对定位 */
+.path-navigator {
+    position: relative;
+}
+
+/* 回到顶部按钮样式 */
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top:active {
+    transform: translateY(0);
+}
+
+.back-to-top i {
+    font-size: 1.2rem;
 }
