@@ -63,3 +63,6 @@ minio:
 ```
 4. 将resources/static/目录下的所有js中的ip改为你的ip：
    *ctrl + F 搜索192.168.1.101 替换为 你的ip*
+
+### 联系
+有任何疑问可联系：iamkevinkd@gmail.com
