@@ -1,0 +1,305 @@
+/* 图床模式遮罩层 */
+.picture-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary);
+    z-index: 9999;
+    display: none;
+}
+
+/* 顶部操作栏 */
+.picture-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    padding: 0 20px;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 10000;
+}
+
+/* 退出按钮 */
+.picture-exit-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.picture-exit-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.picture-exit-btn:active {
+    transform: translateY(0);
+}
+
+/* 瀑布流容器 */
+.picture-container {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    overflow-y: auto;
+    columns: 5 300px;
+    column-gap: 20px;
+}
+
+/* 图片项 */
+.picture-item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: zoom-in;
+    position: relative;
+}
+
+.picture-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.picture-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    cursor: zoom-in;
+}
+
+/* 图片信息悬浮层 */
+.picture-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(to top, 
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        transparent 100%);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.picture-item:hover .picture-info {
+    opacity: 1;
+}
+
+.picture-name {
+    font-size: 14px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.picture-size {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* 滚动条美化 */
+.picture-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.picture-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.picture-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.picture-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* 加载动画 */
+.picture-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-color);
+    font-size: 24px;
+}
+
+/* 深色主题适配 */
+[data-theme="dark"] .picture-overlay {
+    background: var(--bg-primary);
+}
+
+[data-theme="dark"] .picture-item {
+    background: var(--bg-secondary);
+}
+
+/* 预览遮罩层 */
+.preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    cursor: default;
+    pointer-events: all;
+}
+
+/* 预览图片 */
+.preview-image {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+}
+
+/* 添加一个背景遮罩来阻止点击 */
+.preview-overlay::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: all;
+    cursor: default;
+}
+
+/* 预览控制按钮 */
+.preview-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.preview-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+}
+
+.preview-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 关闭按钮样式 */
+.preview-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 10002;
+}
+
+.preview-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* 缩放百分比显示 */
+.scale-display {
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+    margin: 0 10px;
+    cursor: default;
+}
+
+/* 确保图片和控制按钮可以点击 */
+.preview-image,
+.preview-controls,
+.preview-close-btn {
+    pointer-events: auto;
+}
+
+/* 确保控制元素可以点击 */
+.preview-controls,
+.preview-close-btn {
+    pointer-events: all;
+}
+
+/* 图片容器样式 */
+.preview-image-container {
+    position: relative;
+    cursor: default;
+    transform: translate(0, 0);
+    will-change: transform;
+}
+
+/* 确保图片容器可以接收事件 */
+.preview-image-container,
+.preview-controls,
+.preview-close-btn {
+    pointer-events: auto;
+}
+
+/* 拖动状态的样式 */
+.preview-image-container.dragging {
+    transition: none;
+    cursor: grabbing;
+}

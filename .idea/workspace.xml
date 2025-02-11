@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/FileChunkVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/ThreadPool/FileUploadThreadPool.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/ThreadPool/SearchFilePool.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/ThreadPool/UploadThreadPool.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/common/FileConstant.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/common/GlobalException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/common/Result.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/common/SearchConstant.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/config/CrossOriginConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/config/Knife4jConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/config/MinIOConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/controller/FileController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/controller/SearchController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/listener/UploadProgressListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/FileChunkVO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/FileObj.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/RemoveFileDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/UrlDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/service/FileService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/service/SearchService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/SearchServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/util/DatetimeUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/util/FileUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/file/util/JwtTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/check_device.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/mobile.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/mobile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/mobile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/preview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/second.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/binary.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/bucket.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/c#.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/c++.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/c.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/cloud.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/css.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/exe.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/exel.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/golang.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/html.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/java.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/javascript.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/kotlin.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/markdown.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/moon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/music.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/pdf.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/photo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/php.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/python.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/ruby.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/rust.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/scala.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/sun.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/swift.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/txt.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/video.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/xlxs.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/svg/zip.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/utils/download.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/ThreadPool/FileUploadThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/ThreadPool/FileUploadThreadPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/common/FileConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/common/FileConstant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/FileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/util/JwtTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/util/JwtTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mobile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/mobile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/preview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/preview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/second.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/second.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/styles.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="A:/maven" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2qj3eB1BsiaDhtrHyrInLTqlmFg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature__chunk__upload&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/wwb/Desktop/New folder/java-file-system/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RunManager" selected="Spring Boot.File">
+    <configuration name="FileServiceImpl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.file.service.impl.FileServiceImpl" />
+      <module name="file_service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.file.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JwtTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.file.util.JwtTest" />
+      <module name="file_service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.file.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="File" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="file_service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.file.File" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FileServiceImpl" />
+        <item itemvalue="Application.JwtTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="" />
+      <created>1735162252774</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1735162252774</updated>
+      <workItem from="1735162253829" duration="256000" />
+      <workItem from="1735234846207" duration="1416000" />
+      <workItem from="1735421733091" duration="872000" />
+      <workItem from="1736268504790" duration="224000" />
+      <workItem from="1736506454524" duration="2053000" />
+      <workItem from="1736834552859" duration="4275000" />
+      <workItem from="1736864082756" duration="5705000" />
+      <workItem from="1736928402888" duration="11804000" />
+      <workItem from="1738595640472" duration="1094000" />
+      <workItem from="1739217691189" duration="7315000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

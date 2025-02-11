@@ -74,4 +74,8 @@ public interface FileService {
      * @return
      */
     Result renameBucket(String bucketName, String newName);
+
+    Result checkFileChunkStatus(String bucketName, String prefix, String fileName);
+
+    Result uploadFileInParts(MultipartFile chunk, String bucketName, String prefix, String fileName, Long cur, Long total);
 }

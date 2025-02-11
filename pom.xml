@@ -3,14 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.wwb</groupId>
-        <artifactId>custom</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
 
     <groupId>com.file</groupId>
     <artifactId>file_service</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -18,7 +14,6 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <version>2.7.6</version>
         </dependency>
-
 
         <dependency>
             <groupId>io.minio</groupId>
@@ -42,6 +37,12 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
             <version>4.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
 

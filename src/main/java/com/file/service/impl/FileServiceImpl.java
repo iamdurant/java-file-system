@@ -2,6 +2,7 @@ package com.file.service.impl;
 
 import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
+import com.file.pojo.FileChunkVO;
 import com.file.pojo.FileObj;
 import com.file.pojo.RemoveFileDTO;
 import com.file.pojo.UrlDTO;
@@ -9,25 +10,24 @@ import com.file.service.FileService;
 import com.file.util.DatetimeUtil;
 import com.file.util.FileUtil;
 import io.minio.*;
-import io.minio.errors.*;
+
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
 
 @Service
 @Slf4j
@@ -183,7 +183,7 @@ public class FileServiceImpl implements FileService {
     /**
      * 废弃
      *
-     * @return
+     * @return null
      */
     @Override
     @Deprecated
@@ -300,5 +300,119 @@ public class FileServiceImpl implements FileService {
         redis.opsForValue().set(newName, "1");
 
         return com.file.common.Result.ok();
+    }
+
+    @Override
+    public com.file.common.Result checkFileChunkStatus(String bucketName, String prefix, String fileName) {
+        // 检查存储桶内是否存在同名文件
+        String prefixAndName = prefix != null && !prefix.isEmpty() ?
+                prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
+                : fileName;
+        FileChunkVO chunkVO = new FileChunkVO();
+        chunkVO.setBucketName(bucketName);
+        chunkVO.setPrefix(prefix);
+        chunkVO.setFineName(fileName);
+        try {
+            cli.getObject(GetObjectArgs
+                    .builder()
+                    .bucket(bucketName)
+                    .object(prefixAndName)
+                    .build());
+        } catch (Exception e) {
+            File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+            if(!dir.exists()) {
+                // 文件不存在，也没有chunk存在
+                chunkVO.setChunkIndex(0L);
+                return com.file.common.Result.ok(chunkVO);
+            }
+
+            // 存在chunk
+            List<Long> chunks = Arrays.stream(Objects.requireNonNull(dir.listFiles()))
+                    .map(f -> Long.valueOf(f.getName()))
+                    .toList();
+            long max = 0;
+            for(Long idx : chunks) max = Math.max(max, idx);
+            chunkVO.setChunkIndex(++max);
+
+            return com.file.common.Result.ok(chunkVO);
+        }
+
+        chunkVO.setChunkIndex(-1L);
+        return com.file.common.Result.ok(chunkVO);
+    }
+
+    @Override
+    @SneakyThrows
+    public com.file.common.Result uploadFileInParts(MultipartFile chunk, String bucketName, String prefix, String fileName, Long cur, Long total) {
+        File fileDir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        if(!fileDir.exists()) {
+            boolean b = fileDir.mkdir();
+            if(!b) {
+                log.warn("创建临时目录异常：{}", fileName);
+                return com.file.common.Result.fail("服务器开小差了");
+            }
+        }
+
+        File part = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName + "\\" + cur);
+        boolean created = part.createNewFile();
+        if(!created) log.warn("创建分片文件失败：{}:{}", fileName, cur);
+        try (FileOutputStream outputStream = new FileOutputStream(part)) {
+            outputStream.write(chunk.getBytes());
+        }
+
+        if(cur == total - 1) {
+            boolean mergedAndUploaded = mergeChunks(bucketName, prefix, fileName);
+            if(!mergedAndUploaded) {
+                return com.file.common.Result.fail("上传失败");
+            }
+        }
+
+        return com.file.common.Result.ok();
+    }
+
+    private boolean mergeChunks(String bucketName, String prefix, String fileName) {
+        File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        File[] chunks = dir.listFiles();
+        try (FileOutputStream out = new FileOutputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
+            if(chunks != null) {
+                Arrays.sort(chunks, Comparator.comparing(n -> Integer.valueOf(n.getName())));
+                for(File ch : chunks) {
+                    try (FileInputStream in = new FileInputStream(ch)) {
+                        in.transferTo(out);
+                    } catch (IOException e) {
+                        log.warn("chunk合并异常，文件: {}", fileName);
+                    }
+                }
+
+                // do Upload
+                String prefixAndName = prefix != null && !prefix.isEmpty() ?
+                        prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
+                        : fileName;
+                try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
+                    cli.putObject(PutObjectArgs
+                            .builder()
+                            .bucket(bucketName)
+                            .object(prefixAndName)
+                            .stream(in, in.available(), -1)
+                            .build());
+                }
+            }
+        } catch (Exception e) {
+            log.warn("合并上传异常，文件：{}", fileName);
+        }
+
+        // clean cache
+        assert chunks != null;
+        for (File ch : chunks) {
+            boolean d = ch.delete();
+            if(!d) log.warn("删除失败，{}:{}", fileName, ch.getName());
+        }
+        boolean d = dir.delete();
+        if(!d) log.warn("文件临时目录删除失败，{}", fileName);
+
+        boolean completedFileDeleted = new File(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName).delete();
+        if(!completedFileDeleted) log.warn("{}上传完成，cache清除失败", fileName);
+
+        return true;
     }
 }

@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.*;
 
+/**
+ * 文件上传线程池
+ * 对性能提升不大，上传文件到minio，毕竟是io密集型操作
+ */
 @Component
 @Slf4j
 public class FileUploadThreadPool {

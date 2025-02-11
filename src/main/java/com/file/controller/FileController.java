@@ -28,6 +28,7 @@ public class FileController {
     public Result uploadFile(@RequestBody List<MultipartFile> files,
                              @RequestParam("bucket") String bucket,
                              @RequestParam("prefix") String prefix) {
+        log.warn("老的上传接口被调用");
         if(bucket == null || bucket.isEmpty()) return Result.fail(FileConstant.BUCKET_UN_EXIST);
         if(prefix == null) return Result.fail(FileConstant.PREFIX_IS_EMPTY);
 
@@ -101,5 +102,24 @@ public class FileController {
     public Result renameBucket(@RequestParam String bucketName,
                                 @RequestParam String newName) {
         return service.renameBucket(bucketName, newName);
+    }
+
+    @PostMapping("/checkChunkStatus")
+    @ApiOperation("检查文件分片状态")
+    public Result checkFileChunkStatus(@RequestParam String bucketName,
+                                       @RequestParam(required = false) String prefix,
+                                       @RequestParam String fileName) {
+        return service.checkFileChunkStatus(bucketName, prefix, fileName);
+    }
+
+    @PostMapping("/chunksUpload")
+    @ApiOperation("分片上传")
+    public Result uploadFileInParts(@RequestParam MultipartFile chunk,
+                                    @RequestParam String bucketName,
+                                    @RequestParam(required = false) String prefix,
+                                    @RequestParam String fileName,
+                                    @RequestParam Long cur,
+                                    @RequestParam Long total) {
+        return service.uploadFileInParts(chunk, bucketName, prefix, fileName, cur, total);
     }
 }
