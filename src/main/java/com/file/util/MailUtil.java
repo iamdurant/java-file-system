@@ -22,18 +22,18 @@ public class MailUtil {
     private final JavaMailSender sender;
 
     @SneakyThrows
-    public void sendCode(String mailAddrOfUser) {
+    public void sendCode(String code, String mailAddrOfUser) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(from);
         message.setTo(mailAddrOfUser);
         message.setSubject(subject);
-        message.setText(head + generateCode() + tail);
+        message.setText(head + code + tail);
 
         sender.send(message);
     }
 
-    private String generateCode() {
+    public String generateCode() {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for(int i = 0;i < 6;i++) {

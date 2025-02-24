@@ -2,8 +2,8 @@ server:
   port: 7654
 
 spring:
+  # 上传配置
   servlet:
-    # 上传大小匹配
     multipart:
       max-file-size: 3MB
       max-request-size: 10MB
@@ -26,6 +26,17 @@ spring:
           starttls:
             enable: true
             required: true
+  # mysql 配置
+  datasource:
+    url: jdbc:mysql://172.24.192.134:3306/file_sys?serverTimezone=UTC
+    username: jasper
+    password: pubgM666
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# mybatis-plus 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
 
 # minio 配置
 minio:

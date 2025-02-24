@@ -5,16 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/MailTestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/util/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/util/MailUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/UserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/util/EncryptUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/util/JwtTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/util/JwtTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/File.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/MailTestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/util/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/util/MailUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/util/JwtTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/util/JwtTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/mobile.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/mobile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/controller/MailTestController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/util/MailUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/util/MailUtil.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +64,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "feat__user__auth",
     "ignore.virus.scanning.warn.message": "true",
@@ -71,12 +76,30 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "File.Encoding",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RunManager" selected="Spring Boot.File">
+    <configuration name="EncryptUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.file.util.EncryptUtil" />
+      <module name="file_service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.file.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="FileServiceImpl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.file.service.impl.FileServiceImpl" />
       <module name="file_service" />
@@ -138,6 +161,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.EncryptUtil" />
         <item itemvalue="Application.MailUtil" />
         <item itemvalue="Application.JwtUtil" />
         <item itemvalue="Application.FileServiceImpl" />
@@ -163,7 +187,8 @@
       <workItem from="1736928402888" duration="11804000" />
       <workItem from="1738595640472" duration="1094000" />
       <workItem from="1739217691189" duration="11513000" />
-      <workItem from="1740344195476" duration="5884000" />
+      <workItem from="1740344195476" duration="6109000" />
+      <workItem from="1740358665591" duration="7947000" />
     </task>
     <servers />
   </component>
