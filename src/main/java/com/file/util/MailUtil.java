@@ -13,8 +13,6 @@ import java.util.Random;
 public class MailUtil {
     private final String from = "iamkevinkd@gmail.com";
 
-    private final String subject = "欢迎注册AnoCloud";
-
     private final String head = "验证码: ";
 
     private final String tail = "，有效期60秒";
@@ -22,7 +20,7 @@ public class MailUtil {
     private final JavaMailSender sender;
 
     @SneakyThrows
-    public void sendCode(String code, String mailAddrOfUser) {
+    public void sendCode(String subject, String code, String mailAddrOfUser) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(from);

@@ -20,7 +20,7 @@ public class AuthController {
 
     private final EncryptUtil encryptUtil;
 
-    @PostMapping("/code")
+    @PostMapping("/code/register")
     @ApiOperation("获取注册验证码")
     public Result getVerificationCode(@RequestParam("email") String email) {
         if(email == null || email.isEmpty()) return Result.fail("邮箱不能为空");
@@ -31,14 +31,8 @@ public class AuthController {
     @PostMapping("/sighUp")
     @ApiOperation("注册")
     public Result sighUp(@RequestBody UserDTO userInfo) {
-        if(userInfo.getEmail() == null || userInfo.getEmail().isEmpty())
-            return Result.fail("邮箱不能为空");
-        if(userInfo.getPassword() == null || userInfo.getPassword().isEmpty())
-            return Result.fail("密码不能为空");
-        if(userInfo.getPassword().length() < 8)
-            return Result.fail("密码不能低于八位数");
-        if(!encryptUtil.passStrongEnough(userInfo.getPassword()))
-            return Result.fail("密码必须同时包含英文大小写与数字");
+        Object[] re = checkUserInfo(userInfo);
+        if(!((boolean) re[0])) return Result.fail(re[1].toString());
 
         return userService.sighUp(userInfo);
     }
@@ -52,5 +46,44 @@ public class AuthController {
             return Result.fail("密码不能为空");
 
         return userService.sighIn(userInfo);
+    }
+
+    @PostMapping("/code/resetPass")
+    @ApiOperation("获取重置密码验证码")
+    public Result getResetPassCode(@RequestParam("email") String email) {
+        if(email == null || email.isEmpty()) return Result.fail("邮箱不能为空");
+
+        return userService.getResetPassCode(email);
+    }
+
+    @PostMapping("/resetPass")
+    @ApiOperation("重置密码")
+    public Result resetPassword(@RequestBody UserDTO userInfo) {
+        Object[] re = checkUserInfo(userInfo);
+        if(!((boolean) re[0])) return Result.fail(re[1].toString());
+
+        return userService.resetPassword(userInfo);
+    }
+
+    private Object[] checkUserInfo(UserDTO userInfo) {
+        Object[] re = new Object[2];
+        re[0] = true;
+        if(userInfo.getEmail() == null || userInfo.getEmail().isEmpty()) {
+            re[0] = false;
+            re[1] = "邮箱不能为空";
+        }
+        if(userInfo.getPassword() == null || userInfo.getPassword().isEmpty()) {
+            re[0] = false;
+            re[1] = "密码不能为空";
+        }
+        if(userInfo.getPassword().length() < 8) {
+            re[0] = false;
+            re[1] = "密码不能低于八位数";
+        }
+        if(!encryptUtil.passStrongEnough(userInfo.getPassword())) {
+            re[0] = false;
+            re[1] = "密码必须同时包含英文大小写与数字";
+        }
+        return re;
     }
 }

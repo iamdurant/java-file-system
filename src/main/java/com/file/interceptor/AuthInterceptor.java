@@ -15,6 +15,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         String token = request.getHeader("token");
         if(token == null) {
+            // 未登录
             response.sendRedirect("/auth.html");
             return false;
         }
@@ -22,6 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Map<String, Claim> claims = JwtUtil.decrypt(token);
         long exp = claims.get("exp").asDate().getTime();
         if(exp > new Date().getTime()) {
+            // token已过期
             response.sendRedirect("/auth.html");
             return false;
         }

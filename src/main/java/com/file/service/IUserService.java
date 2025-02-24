@@ -20,4 +20,8 @@ public interface IUserService extends IService<User> {
     Result sighIn(UserDTO userInfo);
 
     Result sighUp(UserDTO userInfo);
+
+    Result getResetPassCode(String email);
+
+    Result resetPassword(UserDTO userInfo);
 }
