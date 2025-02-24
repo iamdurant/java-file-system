@@ -5,20 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/UserDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/util/EncryptUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/config/WebMvcConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/interceptor/AuthInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/auth.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/File.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/MailTestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/util/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/util/MailUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/controller/MailTestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/util/MailUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/util/MailUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +181,7 @@
       <workItem from="1738595640472" duration="1094000" />
       <workItem from="1739217691189" duration="11513000" />
       <workItem from="1740344195476" duration="6109000" />
-      <workItem from="1740358665591" duration="7947000" />
+      <workItem from="1740358665591" duration="12217000" />
     </task>
     <servers />
   </component>

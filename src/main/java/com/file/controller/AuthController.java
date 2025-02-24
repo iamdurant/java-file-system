@@ -30,7 +30,7 @@ public class AuthController {
         if(userInfo.getPassword().length() < 8)
             return Result.fail("密码不能低于八位数");
         if(!encryptUtil.passStrongEnough(userInfo.getPassword()))
-            return Result.fail("密码必须同时包含大小写与数字");
+            return Result.fail("密码必须同时包含英文大小写与数字");
 
         return userService.sighUp(userInfo);
     }
