@@ -20,8 +20,16 @@ public class AuthController {
 
     private final EncryptUtil encryptUtil;
 
+    @PostMapping("/code")
+    @ApiOperation("获取注册验证码")
+    public Result getVerificationCode(@RequestParam("email") String email) {
+        if(email == null || email.isEmpty()) return Result.fail("邮箱不能为空");
+
+        return userService.getVerificationCode(email);
+    }
+
     @PostMapping("/sighUp")
-    @ApiOperation("用户注册")
+    @ApiOperation("注册")
     public Result sighUp(@RequestBody UserDTO userInfo) {
         if(userInfo.getEmail() == null || userInfo.getEmail().isEmpty())
             return Result.fail("邮箱不能为空");
@@ -33,19 +41,6 @@ public class AuthController {
             return Result.fail("密码必须同时包含英文大小写与数字");
 
         return userService.sighUp(userInfo);
-    }
-
-    @PostMapping("/sighUp/verify")
-    public Result verifyCode(@RequestParam(value = "email") String email,
-                             @RequestParam(value = "code") String code) {
-        if(email == null || email.isEmpty())
-            return Result.fail("邮箱不能为空");
-        if(code == null || code.isEmpty())
-            return Result.fail("邮箱不能为空");
-        if(code.length() != 6)
-            return Result.fail("验证码长度错误");
-
-        return userService.verifyCode(email, code);
     }
 
     @PostMapping("/sighIn")

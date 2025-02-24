@@ -15,9 +15,9 @@ import com.file.pojo.UserDTO;
  */
 public interface IUserService extends IService<User> {
 
-    Result sighUp(UserDTO userInfo);
+    Result getVerificationCode(String email);
 
     Result sighIn(UserDTO userInfo);
 
-    Result verifyCode(String email, String code);
+    Result sighUp(UserDTO userInfo);
 }
