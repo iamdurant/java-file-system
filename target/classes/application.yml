@@ -9,13 +9,30 @@ spring:
       max-request-size: 10MB
   # redis 配置
   redis:
-    host: 192.168.42.129
+    host: 192.168.1.101
     password: pubgM666
     port: 6379
     database: 2
+  # mail 配置
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: iamkevinkd@gmail.com
+    password: srdlgzhxofwanikw
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 # minio 配置
 minio:
-  endpoint: http://192.168.42.129:9000
+  endpoint: http://192.168.1.101:9000
   access-key: BdsOyQdaT1cMM6lojeoC
   secret-key: Pxd2Dkp9XC1MQ5lRxc3cKuVm8AyKnoOapcSIGZea
+
+# jwt
+jwt:
+  secret: asdhugjasdNDUYGasdh-aSDHGd47bd1D

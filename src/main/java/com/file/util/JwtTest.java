@@ -18,6 +18,7 @@ public class JwtTest {
     static void verifyJwt(String jwt) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256("asdkhaskdhakjshd")).build();
         DecodedJWT result = verifier.verify(jwt);
+
         System.out.println(result.getClaim("user").asString());
         System.out.println(result.getClaim("pri").asString());
         System.out.println(result.getExpiresAt());
