@@ -261,25 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.success) {
-                // 登录成功，保存token并跳转
-                localStorage.setItem('token', data.data);
+                // 登录成功，跳转
                 notifications.show('登录成功，正在跳转...');
-                setTimeout(async () => {
-                try {
-                    const response = await fetch('index.html');
-            
-                if (response.ok) {
-                    const html = await response.text();
-                    document.open();
-                    document.write(html);
-                    document.close();
-                } else {
-                    throw new Error('页面加载失败');
-                }
-        } catch (error) {
-            notifications.show('页面加载失败，请重试', 'error');
-        }
-    }, 1000);
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
             } else {
                 notifications.show(data.message || '登录失败，请检查邮箱和密码', 'error');
             }

@@ -5,36 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/filter/AuthFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/util/BaseContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/File.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/config/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/interceptor/AuthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/interceptor/AuthInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/IUserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/auth.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/auth.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/auth.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/mobile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/mobile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mobile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/mobile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/preview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/preview.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/second.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/second.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/config/WebMvcConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/config/WebMvcConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/controller/AuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/IUserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/auth.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/auth.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/token.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/auth.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/mobile.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/mobile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/mobile.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/mobile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/preview.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/preview.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/second.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/second.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/token.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +189,7 @@
       <workItem from="1739217691189" duration="11513000" />
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
-      <workItem from="1740420284127" duration="20349000" />
+      <workItem from="1740420284127" duration="23394000" />
     </task>
     <servers />
   </component>

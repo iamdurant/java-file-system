@@ -1,9 +1,12 @@
 package com.file.interceptor;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.file.entity.User;
+import com.file.util.BaseContext;
 import com.file.util.JwtUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +39,17 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        // 存储基本信息到ThreadLocal
+        User user = new User();
+        user.setId(claims.get("userId").asLong());
+        user.setEmail(claims.get("email").asString());
+        BaseContext.setUserInfo(user);
+
         return true;
+    }
+
+    @Override
+    public void postHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler, ModelAndView modelAndView) throws Exception {
+        BaseContext.removeUserInfo();
     }
 }

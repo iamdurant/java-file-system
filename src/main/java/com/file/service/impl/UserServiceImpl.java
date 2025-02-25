@@ -95,6 +95,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(!encryptedPass.equals(user.getPassword())) return Result.fail("密码错误");
 
         HashMap<String, Object> map = new HashMap<>();
+        // 自定义claims存与jwt_payload中
+        map.put("userId", user.getId());
         map.put("email", userInfo.getEmail());
         String token = JwtUtil.token(map);
 
