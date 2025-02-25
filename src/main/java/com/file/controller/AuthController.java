@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -39,13 +41,13 @@ public class AuthController {
 
     @PostMapping("/sighIn")
     @ApiOperation("用户登录")
-    public Result sighIn(@RequestBody UserDTO userInfo) {
+    public Result sighIn(@RequestBody UserDTO userInfo, HttpServletResponse resp) {
         if(userInfo.getEmail() == null || userInfo.getEmail().isEmpty())
             return Result.fail("邮箱不能为空");
         if(userInfo.getPassword() == null || userInfo.getPassword().isEmpty())
             return Result.fail("密码不能为空");
 
-        return userService.sighIn(userInfo);
+        return userService.sighIn(userInfo, resp);
     }
 
     @PostMapping("/code/resetPass")

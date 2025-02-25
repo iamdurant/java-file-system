@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result sighUp(UserDTO userInfo) {
-        String storedCode = redis.opsForValue().get(registerCodeKeyPrefix + userInfo.getCode());
+        String storedCode = redis.opsForValue().get(registerCodeKeyPrefix + userInfo.getEmail());
         if(storedCode == null || storedCode.isEmpty()) return Result.fail("验证码过期，请重新获取验证码");
 
         if(!userInfo.getCode().equals(storedCode)) return Result.fail("验证码错误");
@@ -84,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Result sighIn(UserDTO userInfo) {
+    public Result sighIn(UserDTO userInfo, HttpServletResponse resp) {
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getEmail, userInfo.getEmail()));
         if(user == null) return Result.fail("用户不存在");
@@ -96,7 +98,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         map.put("email", userInfo.getEmail());
         String token = JwtUtil.token(map);
 
-        return Result.ok(token);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        // 七天有效期，与token保持一致
+        cookie.setMaxAge(86400 * 7);
+        resp.addCookie(cookie);
+
+        return Result.ok("登陆成功");
     }
 
     @Override

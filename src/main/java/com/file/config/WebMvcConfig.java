@@ -14,6 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/auth.html")
                 .excludePathPatterns("/auth.css")
                 .excludePathPatterns("/auth.js")
+                .excludePathPatterns("/token.js")
                 .excludePathPatterns("/svg/**")
                 .excludePathPatterns("/auth/**")
                 // Knife4j 相关路径

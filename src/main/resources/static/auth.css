@@ -175,7 +175,7 @@ body {
 }
 
 .form-group input {
-    width: calc(100% - 32px);
+    width: 100%;
     height: var(--auth-input-height);
     padding: 0 16px;
     border: 1px solid var(--border-color);
@@ -184,6 +184,41 @@ body {
     color: var(--text-primary);
     font-size: 14px;
     transition: all var(--transition-fast) ease;
+    box-sizing: border-box;
+}
+
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-container input {
+    padding-right: 40px;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast) ease;
+}
+
+.toggle-password:hover {
+    color: var(--text-primary);
+}
+
+.toggle-password:focus {
+    outline: none;
 }
 
 .form-group input:focus {
@@ -335,6 +370,35 @@ body {
 
 [data-theme="dark"] .form-group input {
     background-color: var(--bg-tertiary);
+}
+
+/* 通知样式 */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background-color: #52c41a;
+}
+
+.notification.error {
+    background-color: #ff4d4f;
 }
 
 /* 响应式设计 */
