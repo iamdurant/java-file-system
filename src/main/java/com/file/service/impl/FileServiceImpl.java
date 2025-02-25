@@ -1,6 +1,7 @@
 package com.file.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
 import com.file.mapper.BucketMapper;
@@ -288,23 +289,45 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public com.file.common.Result removeBucket(String bucketName) {
-        String fakeName = redis.opsForValue().get(bucketName);
-        if(fakeName == null) return com.file.common.Result.fail(FileConstant.TRY_REMOVE_UN_EXIST_BUCKET);
+        Long userId = BaseContext.getUserInfo().getId();
+        com.file.entity.Bucket existed = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
+                .eq(com.file.entity.Bucket::getUserId, userId)
+                .eq(com.file.entity.Bucket::getDeleted, true));
+        if(existed == null || existed.getDeleted()) return com.file.common.Result.fail("bucket不存在");
 
+        com.file.entity.Bucket bucket = new com.file.entity.Bucket();
+        bucket.setDeleted(true);
         try {
-            cli.removeBucket(
-                    RemoveBucketArgs
-                            .builder()
-                            .bucket(bucketName)
-                            .build());
-        } catch (Exception e) {
-            return com.file.common.Result.fail(e.getMessage());
-        }
+            // 修改bucket状态为删除
+            int i = bucketMapper.update(bucket,
+                    new LambdaUpdateWrapper<com.file.entity.Bucket>()
+                            .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
+                            .eq(com.file.entity.Bucket::getUserId, userId)
+                            .eq(com.file.entity.Bucket::getDeleted, true));
+            if(i != 1) return com.file.common.Result.fail("删除失败");
 
-        // 可以删除bucket
-        redis.delete(bucketName);
-        String s = redis.opsForValue().get(fakeName);
-        if(s != null) redis.delete(fakeName);
+            // minio尝试删除bucket
+            cli.removeBucket(RemoveBucketArgs
+                    .builder()
+                    .bucket(bucketName)
+                    .build());
+        } catch (Exception e) {
+            // 重置状态
+            bucket.setDeleted(true);
+            int i = bucketMapper.update(bucket,
+                    new LambdaUpdateWrapper<com.file.entity.Bucket>()
+                            .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
+                            .eq(com.file.entity.Bucket::getUserId, userId)
+                            .eq(com.file.entity.Bucket::getDeleted, false));
+            if(i != 1) {
+                log.error("重置状态异常，此bucket需被设置为未删除，需手动重置，userId：{}, bucketRealName：{}",
+                        BaseContext.getUserInfo().getId(),
+                        bucketName);
+            }
+
+            return com.file.common.Result.fail("bucket下存在文件，无法删除");
+        }
 
         return com.file.common.Result.ok();
     }
