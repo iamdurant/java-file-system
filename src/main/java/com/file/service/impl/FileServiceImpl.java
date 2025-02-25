@@ -202,14 +202,18 @@ public class FileServiceImpl implements FileService {
     public Boolean createBucket(FileObj fileObj) {
         // 检查bucket_fake_name是否存在
         com.file.entity.Bucket bucket = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
-                .eq(com.file.entity.Bucket::getBucketFakeName, fileObj.getBucketName()));
+                .eq(com.file.entity.Bucket::getBucketFakeName, fileObj.getBucketName())
+                .eq(com.file.entity.Bucket::getUserId, BaseContext.getUserInfo().getId())
+                .eq(com.file.entity.Bucket::getDeleted, false));
         if(bucket != null) return false;
 
         // 生成bucket_real_name
         String bucketRealName = FileUtil.generateBucketName();
         while(
                 bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
-                        .eq(com.file.entity.Bucket::getBucketRealName, bucketRealName)) != null
+                        .eq(com.file.entity.Bucket::getBucketRealName, bucketRealName)
+                        .eq(com.file.entity.Bucket::getUserId, BaseContext.getUserInfo().getId())
+                        .eq(com.file.entity.Bucket::getDeleted, false)) != null
         ) bucketRealName = FileUtil.generateBucketName();
 
         // 构造对象
@@ -217,6 +221,9 @@ public class FileServiceImpl implements FileService {
         entity.setCreateDate(LocalDateTime.now());
         entity.setBucketFakeName(fileObj.getBucketName());
         entity.setBucketRealName(bucketRealName);
+
+        // minio 创建bucket
+        cli.makeBucket(MakeBucketArgs.builder().bucket(bucketRealName).build());
 
         // 存储
         entity.setUserId(BaseContext.getUserInfo().getId());
@@ -304,16 +311,27 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public com.file.common.Result renameBucket(String bucketName, String newName) {
-        String oldName = redis.opsForValue().get(bucketName);
-        if(oldName == null) return com.file.common.Result.fail("存储桶不存在");
+        // 检查real_bucket是否存在
+        Long userId = BaseContext.getUserInfo().getId();
+        com.file.entity.Bucket bucket = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                .eq(com.file.entity.Bucket::getUserId, userId)
+                .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
+                .eq(com.file.entity.Bucket::getDeleted, false));
+        if(bucket == null) return com.file.common.Result.fail("尝试重命名一个不存在的存储桶");
 
-        String newNameExisted = redis.opsForValue().get(newName);
-        if(newNameExisted != null) return com.file.common.Result.fail("此名称已被使用");
+        // 检查fake_bucket是否存在
+        if(
+                bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                        .eq(com.file.entity.Bucket::getUserId, userId)
+                        .eq(com.file.entity.Bucket::getBucketFakeName, newName)
+                        .eq(com.file.entity.Bucket::getDeleted, false)) != null
+        ) return com.file.common.Result.fail("存储桶已存在，重命名冲突");
 
-        redis.delete(oldName);
-        redis.delete(bucketName);
-        redis.opsForValue().set(bucketName, newName);
-        redis.opsForValue().set(newName, "1");
+        // 更新信息并存储
+        bucket.setBucketFakeName(newName);
+        bucket.setUpdateDate(LocalDateTime.now());
+        int i = bucketMapper.updateById(bucket);
+        if(i != 1) return com.file.common.Result.fail("重命名失败");
 
         return com.file.common.Result.ok();
     }
