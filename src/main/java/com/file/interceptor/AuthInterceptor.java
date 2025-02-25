@@ -41,7 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // 存储基本信息到ThreadLocal
         User user = new User();
-        user.setId(claims.get("userId").asLong());
+        user.setId(Long.valueOf(claims.get("userId").asString()));
         user.setEmail(claims.get("email").asString());
         BaseContext.setUserInfo(user);
 
