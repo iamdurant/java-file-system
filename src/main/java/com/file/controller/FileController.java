@@ -25,6 +25,7 @@ public class FileController {
 
     @PostMapping("/upload")
     @ApiOperation("上传文件")
+    @Deprecated
     public Result uploadFile(@RequestBody List<MultipartFile> files,
                              @RequestParam("bucket") String bucket,
                              @RequestParam("prefix") String prefix) {
