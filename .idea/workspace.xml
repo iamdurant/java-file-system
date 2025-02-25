@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/listener/UploadProgressListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/util/JwtTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +53,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feat__refactor__file__related__interfaces",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/wwb/Desktop/New folder/java-file-system/pom.xml",
     "node.js.detected.package.eslint": "true",
@@ -180,7 +176,7 @@
       <workItem from="1739217691189" duration="11513000" />
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
-      <workItem from="1740420284127" duration="24400000" />
+      <workItem from="1740420284127" duration="29292000" />
     </task>
     <servers />
   </component>
@@ -199,20 +195,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/file/service/impl/SearchServiceImpl.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/file/interceptor/AuthInterceptor.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.file.entity.User" memberName="email" />

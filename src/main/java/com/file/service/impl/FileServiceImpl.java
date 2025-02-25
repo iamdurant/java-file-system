@@ -1,12 +1,15 @@
 package com.file.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
+import com.file.mapper.BucketMapper;
 import com.file.pojo.FileChunkVO;
 import com.file.pojo.FileObj;
 import com.file.pojo.RemoveFileDTO;
 import com.file.pojo.UrlDTO;
 import com.file.service.FileService;
+import com.file.util.BaseContext;
 import com.file.util.DatetimeUtil;
 import com.file.util.FileUtil;
 import io.minio.*;
@@ -24,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +42,8 @@ public class FileServiceImpl implements FileService {
     private final StringRedisTemplate redis;
 
     private final FileUploadThreadPool pool;
+
+    private final BucketMapper bucketMapper;
 
     @Override
     @SneakyThrows
@@ -194,19 +200,29 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public Boolean createBucket(FileObj fileObj) {
-        String b = redis.opsForValue().get(fileObj.getBucketName());
-        // 检查bucket是否存在
-        if(b != null) return false;
+        // 检查bucket_fake_name是否存在
+        com.file.entity.Bucket bucket = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                .eq(com.file.entity.Bucket::getBucketFakeName, fileObj.getBucketName()));
+        if(bucket != null) return false;
 
-        String fakeName = FileUtil.generateBucketName();
-        // 检查bucket是否存在
-        if (cli.bucketExists(BucketExistsArgs.builder().bucket(fakeName).build())) {
-            return false;
-        }
+        // 生成bucket_real_name
+        String bucketRealName = FileUtil.generateBucketName();
+        while(
+                bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                        .eq(com.file.entity.Bucket::getBucketRealName, bucketRealName)) != null
+        ) bucketRealName = FileUtil.generateBucketName();
 
-        cli.makeBucket(MakeBucketArgs.builder().bucket(fakeName).build());
-        redis.opsForValue().set(fakeName, fileObj.getBucketName());
-        redis.opsForValue().set(fileObj.getBucketName(), "1");
+        // 构造对象
+        com.file.entity.Bucket entity = new com.file.entity.Bucket();
+        entity.setCreateDate(LocalDateTime.now());
+        entity.setBucketFakeName(fileObj.getBucketName());
+        entity.setBucketRealName(bucketRealName);
+
+        // 存储
+        entity.setUserId(BaseContext.getUserInfo().getId());
+        int i = bucketMapper.insert(entity);
+        if(i != 1) return false;
+
         return true;
     }
 
