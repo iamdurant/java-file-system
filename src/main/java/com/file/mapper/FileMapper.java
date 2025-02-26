@@ -17,10 +17,11 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface FileMapper extends BaseMapper<File> {
     @Select("select count(*) from file where user_id = #{userId} and name = #{name}" +
-            "and directory_id = (select id from directory where user_id = #{userId} and path = #{path})")
+            "and directory_id = #{directoryId} and bucket_id = #{bucketId}")
     Integer checkFileExists(@Param("userId") Long userId,
-                            @Param("path") String path,
-                            @Param("name") String name);
+                            @Param("name") String name,
+                            @Param("directoryId") Long directoryId,
+                            @Param("bucketId") Long bucketId);
 
     @Select("select id from file where hash_value = #{md5}")
     Long selectFileIdByMd5(@Param("md5") String md5);

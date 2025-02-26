@@ -397,11 +397,13 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         String path = prefix.isEmpty() ? prefix : prefix + "/";
         int i;
         // 检查目录是否存在
-        i = dirMapper.checkDirExists(userId, path);
+        Long bucketId = bucketMapper.queryIdByBucketRealName(userId, bucketName);
+        i = dirMapper.checkDirExists(userId, path, bucketId);
         if(i != 1) return com.file.common.Result.fail("目录不存在");
 
         // 检查同一目录下是否存在同名文件
-        i = fileMapper.checkFileExists(userId, path, fileName);
+        Long dirId = dirMapper.selectIdByPath(userId, bucketId, path);
+        i = fileMapper.checkFileExists(userId, fileName, dirId, bucketId);
         if(i == 1) return com.file.common.Result.fail("此目录下存在同名文件");
 
         FileChunkVO chunkVO = new FileChunkVO();
@@ -481,8 +483,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 Long bucketId = bucketMapper.queryIdByBucketRealName(userId, bucketName);
                 entity.setBucketId(bucketId);
                 // set directoryId
-                String path = prefix + "/";
-                Long dirId = dirMapper.selectIdByPath(userId, path);
+                String path = prefix.isEmpty() ? prefix : prefix + "/";
+                Long dirId = dirMapper.selectIdByPath(userId, bucketId, path);
                 entity.setDirectoryId(dirId);
 
                 try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
@@ -495,7 +497,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                         entity.setPointer(fId);
                     } else {
                         // 上传
-                        String prefixAndName = prefix != null && !prefix.isEmpty() ?
+                        String prefixAndName = !prefix.isEmpty() ?
                                 prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
                                 : fileName;
                         cli.putObject(PutObjectArgs

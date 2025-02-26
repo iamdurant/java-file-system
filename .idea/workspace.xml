@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/FileMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/FileMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/util/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/util/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/BucketMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/BucketMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/FileMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/FileMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
@@ -178,7 +175,7 @@
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
-      <workItem from="1740594556098" duration="9755000" />
+      <workItem from="1740594556098" duration="12359000" />
     </task>
     <servers />
   </component>

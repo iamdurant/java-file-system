@@ -16,9 +16,10 @@ import java.time.LocalDateTime;
  */
 @Mapper
 public interface DirectoryMapper extends BaseMapper<Directory> {
-    @Select("select count(*) from directory where user_id = #{userId} and path = #{path}")
+    @Select("select count(*) from directory where user_id = #{userId} and path = #{path} and bucket_id = #{bucketId}")
     Integer checkDirExists(@Param("userId") Long userId,
-                           @Param("path") String path);
+                           @Param("path") String path,
+                           @Param("bucketId") Long bucketId);
 
     @Insert("insert into directory (user_id, bucket_id, create_date, path) " +
             "values (#{userId}, #{bucketId}, #{createDate}, #{path})")
@@ -32,6 +33,8 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
                     @Param("bucketId") Long bucketId,
                     @Param("path") String path);
 
-    @Select("select id from directory where user_id = #{userId} and path = #{path}")
-    Long selectIdByPath(@Param("userId") Long userId, @Param("path") String path);
+    @Select("select id from directory where user_id = #{userId} and path = #{path} and bucket_id = #{bucketId}")
+    Long selectIdByPath(@Param("userId") Long userId,
+                        @Param("bucketId") Long bucketId,
+                        @Param("path") String path);
 }
