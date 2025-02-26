@@ -16,7 +16,6 @@ import com.file.util.FileUtil;
 import io.minio.*;
 
 import io.minio.http.Method;
-import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -49,21 +48,21 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public List<FileObj> listBuckets() {
-        List<Bucket> buckets = cli.listBuckets();
+        Long userId = BaseContext.getUserInfo().getId();
+        List<com.file.entity.Bucket> buckets = bucketMapper.selectList(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                .eq(com.file.entity.Bucket::getUserId, userId)
+                .eq(com.file.entity.Bucket::getDeleted, false));
 
-        return buckets.stream().map(b -> {
-            FileObj fileObj = new FileObj();
+        List<FileObj> result = new ArrayList<>();
+        buckets.forEach(b -> {
+            FileObj f = new FileObj();
+            f.setBucket(true);
+            f.setBucketName(b.getBucketRealName());
+            f.setBucketRealName(b.getBucketFakeName());
+            result.add(f);
+        });
 
-            String bucketRealName = redis.opsForValue().get(b.name());
-            if(bucketRealName == null) {
-                log.info("bucket: {}不存在映射，请请手动加上映射", b.name());
-            }
-
-            fileObj.setBucketName(b.name());
-            fileObj.setBucketRealName(bucketRealName);
-            fileObj.setBucket(true);
-            return fileObj;
-        }).toList();
+        return result;
     }
 
     @Override
