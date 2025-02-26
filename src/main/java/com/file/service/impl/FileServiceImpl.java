@@ -201,10 +201,11 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public Boolean createBucket(FileObj fileObj) {
+        Long userId = BaseContext.getUserInfo().getId();
         // 检查bucket_fake_name是否存在
         com.file.entity.Bucket bucket = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
                 .eq(com.file.entity.Bucket::getBucketFakeName, fileObj.getBucketName())
-                .eq(com.file.entity.Bucket::getUserId, BaseContext.getUserInfo().getId())
+                .eq(com.file.entity.Bucket::getUserId, userId)
                 .eq(com.file.entity.Bucket::getDeleted, false));
         if(bucket != null) return false;
 
@@ -213,25 +214,30 @@ public class FileServiceImpl implements FileService {
         while(
                 bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
                         .eq(com.file.entity.Bucket::getBucketRealName, bucketRealName)
-                        .eq(com.file.entity.Bucket::getUserId, BaseContext.getUserInfo().getId())
+                        .eq(com.file.entity.Bucket::getUserId, userId)
                         .eq(com.file.entity.Bucket::getDeleted, false)) != null
         ) bucketRealName = FileUtil.generateBucketName();
+
+        int c = bucketMapper.checkExist(userId, fileObj.getBucketName());
+        if(c == 1) {
+            // 之前存在此存储桶，只需更新状态
+            int i = bucketMapper.updateStatus(userId, fileObj.getBucketName(), bucketRealName);
+            return i == 1;
+        }
+
+        // minio 创建bucket
+        cli.makeBucket(MakeBucketArgs.builder().bucket(bucketRealName).build());
 
         // 构造对象
         com.file.entity.Bucket entity = new com.file.entity.Bucket();
         entity.setCreateDate(LocalDateTime.now());
         entity.setBucketFakeName(fileObj.getBucketName());
         entity.setBucketRealName(bucketRealName);
-
-        // minio 创建bucket
-        cli.makeBucket(MakeBucketArgs.builder().bucket(bucketRealName).build());
-
         // 存储
         entity.setUserId(BaseContext.getUserInfo().getId());
         int i = bucketMapper.insert(entity);
-        if(i != 1) return false;
 
-        return true;
+        return i == 1;
     }
 
     @Override
