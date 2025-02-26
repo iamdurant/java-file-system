@@ -62,6 +62,9 @@ public class FileController {
     @PostMapping("/createArchive")
     @ApiOperation("创建文件夹")
     public Result createArchive(@RequestBody FileObj fileObj) {
+        if(fileObj.getBucketName() == null || fileObj.getBucketName().isEmpty())
+            return Result.fail("文件夹名字为空");
+
         Boolean b = service.createArchive(fileObj);
         return  b ? Result.ok() : Result.fail(FileConstant.FAIL_TO_CREATE_ARCHIVE);
     }

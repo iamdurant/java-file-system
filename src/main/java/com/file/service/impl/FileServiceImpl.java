@@ -2,9 +2,13 @@ package com.file.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
+import com.file.entity.Directory;
 import com.file.mapper.BucketMapper;
+import com.file.mapper.DirectoryMapper;
+import com.file.mapper.FileMapper;
 import com.file.pojo.FileChunkVO;
 import com.file.pojo.FileObj;
 import com.file.pojo.RemoveFileDTO;
@@ -36,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.File> implements FileService {
     private final MinioClient cli;
 
     private final StringRedisTemplate redis;
@@ -44,6 +48,8 @@ public class FileServiceImpl implements FileService {
     private final FileUploadThreadPool pool;
 
     private final BucketMapper bucketMapper;
+
+    private final DirectoryMapper dirMapper;
 
     @Override
     @SneakyThrows
@@ -242,8 +248,19 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public Boolean createArchive(FileObj fileObj) {
-        if(fileObj.getBucketName() == null || fileObj.getBucketName().isEmpty())
-            return false;
+        Long userId = BaseContext.getUserInfo().getId();
+
+        Long bucketId = bucketMapper.queryIdByBucketRealName(userId, fileObj.getBucketName());
+        if(bucketId == null) return false;
+
+        Directory dir = new Directory();
+        dir.setUserId(userId);
+        dir.setBucketId(bucketId);
+        dir.setCreateDate(LocalDateTime.now());
+        dir.setPath(fileObj.getPrefix());
+
+        int i = dirMapper.insert(dir);
+        if(i != 1) return false;
 
         cli.putObject(PutObjectArgs.builder()
                 .bucket(fileObj.getBucketName())

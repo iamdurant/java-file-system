@@ -1,7 +1,9 @@
 package com.file.service;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.file.common.Result;
+import com.file.entity.File;
 import com.file.pojo.FileObj;
 import com.file.pojo.RemoveFileDTO;
 import com.file.pojo.UrlDTO;
@@ -10,9 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 /**
- * 整个文件系统的接口
+ * 文件相关接口
  */
-public interface FileService {
+public interface FileService extends IService<File> {
     /**
      * 返回所有bucket,
      * @return

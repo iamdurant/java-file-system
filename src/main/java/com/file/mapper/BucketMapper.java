@@ -22,4 +22,7 @@ public interface BucketMapper extends BaseMapper<Bucket> {
 
     @Update("update bucket set bucket_real_name = #{bucketRealName}, deleted = false where user_id = #{userId} and bucket_fake_name = #{bucketFakeName} and deleted = true")
     Integer updateStatus(@Param("userId") Long userId, @Param("bucketFakeName") String bucketFakeName, @Param("bucketRealName") String bucketRealName);
+
+    @Select("select id from bucket where user_id = #{userId} and bucket_real_name = #{bucketRealName}")
+    Long queryIdByBucketRealName(@Param("userId") Long userId, @Param("bucketRealName") String bucketRealName);
 }
