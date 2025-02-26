@@ -25,4 +25,7 @@ public interface BucketMapper extends BaseMapper<Bucket> {
 
     @Select("select id from bucket where user_id = #{userId} and bucket_real_name = #{bucketRealName}")
     Long queryIdByBucketRealName(@Param("userId") Long userId, @Param("bucketRealName") String bucketRealName);
+
+    @Select("select id from bucket where user_id = #{userId} and bucket_real_name = #{bucketRealName}")
+    Long selectIdByBucketRealName(@Param("userId") Long userId, @Param("bucketRealName") String bucketRealName);
 }

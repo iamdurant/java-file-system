@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -50,6 +51,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     private final BucketMapper bucketMapper;
 
     private final DirectoryMapper dirMapper;
+
+    private final FileMapper fileMapper;
 
     @Override
     @SneakyThrows
@@ -205,6 +208,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     @Override
     @SneakyThrows
+    @Transactional
     public Boolean createBucket(FileObj fileObj) {
         Long userId = BaseContext.getUserInfo().getId();
         // 检查bucket_fake_name是否存在
@@ -226,23 +230,26 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         int c = bucketMapper.checkExist(userId, fileObj.getBucketName());
         if(c == 1) {
             // 之前存在此存储桶，只需更新状态
-            int i = bucketMapper.updateStatus(userId, fileObj.getBucketName(), bucketRealName);
-            return i == 1;
+            bucketMapper.updateStatus(userId, fileObj.getBucketName(), bucketRealName);
+        } else {
+            // 构造对象
+            com.file.entity.Bucket entity = new com.file.entity.Bucket();
+            entity.setCreateDate(LocalDateTime.now());
+            entity.setBucketFakeName(fileObj.getBucketName());
+            entity.setBucketRealName(bucketRealName);
+            // 存储
+            entity.setUserId(BaseContext.getUserInfo().getId());
+            bucketMapper.insert(entity);
         }
+
+        Long bucketId = bucketMapper.selectIdByBucketRealName(userId, bucketRealName);
+        // 构造根目录
+        dirMapper.buildRoot(userId, bucketId, LocalDateTime.now(), "");
 
         // minio 创建bucket
         cli.makeBucket(MakeBucketArgs.builder().bucket(bucketRealName).build());
 
-        // 构造对象
-        com.file.entity.Bucket entity = new com.file.entity.Bucket();
-        entity.setCreateDate(LocalDateTime.now());
-        entity.setBucketFakeName(fileObj.getBucketName());
-        entity.setBucketRealName(bucketRealName);
-        // 存储
-        entity.setUserId(BaseContext.getUserInfo().getId());
-        int i = bucketMapper.insert(entity);
-
-        return i == 1;
+        return true;
     }
 
     @Override
@@ -322,18 +329,21 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         bucket.setDeleted(true);
         try {
             // 修改bucket状态为删除
-            int i = bucketMapper.update(bucket,
+            bucketMapper.update(bucket,
                     new LambdaUpdateWrapper<com.file.entity.Bucket>()
                             .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
                             .eq(com.file.entity.Bucket::getUserId, userId)
                             .eq(com.file.entity.Bucket::getDeleted, true));
-            if(i != 1) return com.file.common.Result.fail("删除失败");
 
             // minio尝试删除bucket
             cli.removeBucket(RemoveBucketArgs
                     .builder()
                     .bucket(bucketName)
                     .build());
+
+            // 删除根目录
+            Long bucketId = bucketMapper.selectIdByBucketRealName(userId, bucketName);
+            dirMapper.removeRoot(userId, bucketId, "");
         } catch (Exception e) {
             // 重置状态
             bucket.setDeleted(true);
@@ -383,40 +393,37 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     @Override
     public com.file.common.Result checkFileChunkStatus(String bucketName, String prefix, String fileName) {
-        // 检查存储桶内是否存在同名文件
-        String prefixAndName = prefix != null && !prefix.isEmpty() ?
-                prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
-                : fileName;
+        Long userId = BaseContext.getUserInfo().getId();
+        String path = prefix.isEmpty() ? prefix : prefix + "/";
+        int i;
+        // 检查目录是否存在
+        i = dirMapper.checkDirExists(userId, path);
+        if(i != 1) return com.file.common.Result.fail("目录不存在");
+
+        // 检查同一目录下是否存在同名文件
+        i = fileMapper.checkFileExists(userId, path, fileName);
+        if(i == 1) return com.file.common.Result.fail("此目录下存在同名文件");
+
         FileChunkVO chunkVO = new FileChunkVO();
         chunkVO.setBucketName(bucketName);
         chunkVO.setPrefix(prefix);
         chunkVO.setFineName(fileName);
-        try {
-            cli.getObject(GetObjectArgs
-                    .builder()
-                    .bucket(bucketName)
-                    .object(prefixAndName)
-                    .build());
-        } catch (Exception e) {
-            File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
-            if(!dir.exists()) {
-                // 文件不存在，也没有chunk存在
-                chunkVO.setChunkIndex(0L);
-                return com.file.common.Result.ok(chunkVO);
-            }
 
-            // 存在chunk
-            List<Long> chunks = Arrays.stream(Objects.requireNonNull(dir.listFiles()))
-                    .map(f -> Long.valueOf(f.getName()))
-                    .toList();
-            long max = 0;
-            for(Long idx : chunks) max = Math.max(max, idx);
-            chunkVO.setChunkIndex(++max);
-
+        File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        if(!dir.exists()) {
+            // 文件不存在，也没有chunk存在
+            chunkVO.setChunkIndex(0L);
             return com.file.common.Result.ok(chunkVO);
         }
 
-        chunkVO.setChunkIndex(-1L);
+        // 存在chunk
+        List<Long> chunks = Arrays.stream(Objects.requireNonNull(dir.listFiles()))
+                .map(f -> Long.valueOf(f.getName()))
+                .toList();
+        long max = 0;
+        for(Long idx : chunks) max = Math.max(max, idx);
+        chunkVO.setChunkIndex(++max);
+
         return com.file.common.Result.ok(chunkVO);
     }
 
@@ -440,8 +447,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         }
 
         if(cur == total - 1) {
-            boolean mergedAndUploaded = mergeChunks(bucketName, prefix, fileName);
-            if(!mergedAndUploaded) {
+            boolean uploadAndSaved = mergeChunks(bucketName, prefix, fileName);
+            if(!uploadAndSaved) {
                 return com.file.common.Result.fail("上传失败");
             }
         }
@@ -462,22 +469,53 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                         log.warn("chunk合并异常，文件: {}", fileName);
                     }
                 }
+                out.flush();
 
-                // do Upload
-                String prefixAndName = prefix != null && !prefix.isEmpty() ?
-                        prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
-                        : fileName;
+                // 构造file entity
+                com.file.entity.File entity = new com.file.entity.File();
+                entity.setUserId(BaseContext.getUserInfo().getId());
+                entity.setName(fileName);
+                entity.setCreateDate(LocalDateTime.now());
+                // set bucketId
+                Long userId = BaseContext.getUserInfo().getId();
+                Long bucketId = bucketMapper.queryIdByBucketRealName(userId, bucketName);
+                entity.setBucketId(bucketId);
+                // set directoryId
+                String path = prefix + "/";
+                Long dirId = dirMapper.selectIdByPath(userId, path);
+                entity.setDirectoryId(dirId);
+
                 try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
-                    cli.putObject(PutObjectArgs
-                            .builder()
-                            .bucket(bucketName)
-                            .object(prefixAndName)
-                            .stream(in, in.available(), -1)
-                            .build());
+                    entity.setSize(in.getChannel().size());
+                    // md5 hash，检查是否存在相同文件
+                    String md5 = FileUtil.md5Hash(in.readAllBytes());
+                    Long fId = fileMapper.selectFileIdByMd5(md5);
+                    if(fId != null) {
+                        // 存在相同文件，无需上传，保存引用
+                        entity.setPointer(fId);
+                    } else {
+                        // 上传
+                        String prefixAndName = prefix != null && !prefix.isEmpty() ?
+                                prefix.endsWith("/") ? prefix + fileName : prefix + "/" + fileName
+                                : fileName;
+                        cli.putObject(PutObjectArgs
+                                .builder()
+                                .bucket(bucketName)
+                                .object(prefixAndName)
+                                .stream(in, in.available(), -1)
+                                .build());
+
+                        // 每个file，只保存一份hash value
+                        entity.setHashValue(md5);
+                    }
                 }
+
+                // 插入
+                fileMapper.insert(entity);
             }
         } catch (Exception e) {
             log.warn("合并上传异常，文件：{}", fileName);
+            return false;
         }
 
         // clean cache

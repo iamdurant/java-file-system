@@ -41,7 +41,7 @@ public class FileUtil {
         for(int i = 0;i < arr.length;i++) {
             int a = arr[i];
             int b = arr[i];
-            result[2 * i] = hexArr[a >> 4];
+            result[2 * i] = hexArr[(a >> 4) & 0x0f];
             result[2 * i + 1] = hexArr[b & 0x0f];
         }
         return new String(result);

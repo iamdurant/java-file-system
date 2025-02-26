@@ -2,7 +2,9 @@ package com.file.mapper;
 
 import com.file.entity.Directory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -14,5 +16,22 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DirectoryMapper extends BaseMapper<Directory> {
+    @Select("select count(*) from directory where user_id = #{userId} and path = #{path}")
+    Integer checkDirExists(@Param("userId") Long userId,
+                           @Param("path") String path);
 
+    @Insert("insert into directory (user_id, bucket_id, create_date, path) " +
+            "values (#{userId}, #{bucketId}, #{createDate}, #{path})")
+    void buildRoot(@Param("userId") Long userId,
+                   @Param("bucketId") Long bucketId,
+                   @Param("createDate") LocalDateTime createDate,
+                   @Param("path") String path);
+
+    @Delete("delete from directory where user_id = #{userId} and bucket_id = #{bucketId} and path = #{path}")
+    void removeRoot(@Param("userId") Long userId,
+                    @Param("bucketId") Long bucketId,
+                    @Param("path") String path);
+
+    @Select("select id from directory where user_id = #{userId} and path = #{path}")
+    Long selectIdByPath(@Param("userId") Long userId, @Param("path") String path);
 }
