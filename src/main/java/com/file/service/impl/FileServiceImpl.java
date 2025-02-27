@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.file.ThreadPool.FileUploadThreadPool;
 import com.file.common.FileConstant;
+import com.file.entity.Bucket;
 import com.file.entity.Directory;
 import com.file.mapper.BucketMapper;
 import com.file.mapper.DirectoryMapper;
@@ -328,21 +329,16 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     @Override
     public com.file.common.Result removeBucket(String bucketName) {
         Long userId = BaseContext.getUserInfo().getId();
-        com.file.entity.Bucket existed = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
-                .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
-                .eq(com.file.entity.Bucket::getUserId, userId)
-                .eq(com.file.entity.Bucket::getDeleted, true));
+        com.file.entity.Bucket existed = getBucket(userId, bucketName);
         if(existed == null || existed.getDeleted()) return com.file.common.Result.fail("bucket不存在");
 
         com.file.entity.Bucket bucket = new com.file.entity.Bucket();
         bucket.setDeleted(true);
+        Long bucketId = bucketMapper.queryIdByBucketRealName(userId, bucketName);
+        bucket.setId(bucketId);
         try {
             // 修改bucket状态为删除
-            bucketMapper.update(bucket,
-                    new LambdaUpdateWrapper<com.file.entity.Bucket>()
-                            .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
-                            .eq(com.file.entity.Bucket::getUserId, userId)
-                            .eq(com.file.entity.Bucket::getDeleted, true));
+            bucketMapper.updateById(bucket);
 
             // minio尝试删除bucket
             cli.removeBucket(RemoveBucketArgs
@@ -351,7 +347,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                     .build());
 
             // 删除根目录
-            Long bucketId = bucketMapper.selectIdByBucketRealName(userId, bucketName);
             dirMapper.removeRoot(userId, bucketId, "");
         } catch (Exception e) {
             // 重置状态
@@ -373,14 +368,18 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         return com.file.common.Result.ok();
     }
 
+    private Bucket getBucket(Long userId, String bucketRealName) {
+        return bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
+                .eq(com.file.entity.Bucket::getBucketRealName, bucketRealName)
+                .eq(com.file.entity.Bucket::getUserId, userId)
+                .eq(com.file.entity.Bucket::getDeleted, false));
+    }
+
     @Override
     public com.file.common.Result renameBucket(String bucketName, String newName) {
         // 检查real_bucket是否存在
         Long userId = BaseContext.getUserInfo().getId();
-        com.file.entity.Bucket bucket = bucketMapper.selectOne(new LambdaQueryWrapper<com.file.entity.Bucket>()
-                .eq(com.file.entity.Bucket::getUserId, userId)
-                .eq(com.file.entity.Bucket::getBucketRealName, bucketName)
-                .eq(com.file.entity.Bucket::getDeleted, false));
+        com.file.entity.Bucket bucket = getBucket(userId, bucketName);
         if(bucket == null) return com.file.common.Result.fail("尝试重命名一个不存在的存储桶");
 
         // 检查fake_bucket是否存在

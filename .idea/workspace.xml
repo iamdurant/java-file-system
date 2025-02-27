@@ -170,7 +170,7 @@
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
-      <workItem from="1740594556098" duration="18143000" />
+      <workItem from="1740594556098" duration="20222000" />
     </task>
     <servers />
   </component>
@@ -189,15 +189,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java</url>
-          <line>547</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.file.entity.User" memberName="email" />
