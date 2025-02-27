@@ -497,9 +497,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 entity.setDirectoryId(dirId);
 
                 try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
-                    entity.setSize(in.getChannel().size());
+                    entity.setSize((long) in.available());
                     // md5 hash，检查是否存在相同文件
-                    String md5 = FileUtil.md5Hash(in.readAllBytes());
+                    byte[] allBytes = in.readAllBytes();
+                    String md5 = FileUtil.md5Hash(allBytes);
                     Long fId = fileMapper.selectFileIdByMd5(md5);
                     if(fId != null) {
                         // 存在相同文件，无需上传，保存引用
@@ -513,7 +514,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                                 .builder()
                                 .bucket(bucketName)
                                 .object(prefixAndName)
-                                .stream(in, in.available(), -1)
+                                .stream(new ByteArrayInputStream(allBytes), allBytes.length, -1)
                                 .build());
 
                         // 每个file，只保存一份hash value
