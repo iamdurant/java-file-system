@@ -77,40 +77,49 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     @Override
     @SneakyThrows
     public List<FileObj> listFiles(FileObj fileObj) {
-        // 查询
-        Iterable<Result<Item>> results = cli.listObjects(
-                ListObjectsArgs
-                        .builder()
-                        .bucket(fileObj.getBucketName())
-                        .prefix(fileObj.getPrefix())
-                        .build());
+        Long userId = BaseContext.getUserInfo().getId();
+        Long bucketId = bucketMapper.selectIdByBucketRealName(userId, fileObj.getBucketName());
+        Long dirId = dirMapper.selectIdByPath(userId, bucketId, fileObj.getPrefix());
 
-        List<FileObj> re = new ArrayList<>();
-        for (Result<Item> result : results) {
-            Item item = result.get();
+        List<FileObj> result = new ArrayList<>();
+        // 查询此目录下所有文件
+        List<com.file.entity.File> files = fileMapper.queryFilesByPath(userId, bucketId, dirId);
+        files.forEach(f -> {
+            FileObj e = new FileObj();
+            e.setName(f.getName());
+            e.setFile(true);
+            e.setSize(f.getSize());
+            e.setDatetime(DatetimeUtil.format(f.getCreateDate()));
+            result.add(e);
+        });
 
-            // 过滤.dir文件
-            if (item.objectName().endsWith(FileConstant.DIR_HELP)) continue;
-
-            FileObj obj = new FileObj();
-            // 设置名称
-            String[] arr = item.objectName().split("/");
-            if (arr.length == 1) obj.setName(arr[0]);
-            else obj.setName(arr[arr.length - 1]);
-
-            // 设置是文件还是文件夹
-            if (item.isDir()) obj.setArchive(true);
-            else obj.setFile(true);
-
-
-            if (!item.isDir()) {
-                // 设置文件大小
-                obj.setSize(item.size());
-
-                // 设置时间
-                obj.setDatetime(DatetimeUtil.format(item.lastModified()));
+        // 查询此目录下级目录
+        List<Directory> dirs = dirMapper.queryDirByPath(userId, bucketId, fileObj.getPrefix());
+        dirs.forEach(d -> {
+            String dirName = checkChildDir(fileObj.getPrefix().length(), d.getPath());
+            if(dirName != null) {
+                FileObj e = new FileObj();
+                e.setName(dirName);
+                e.setDatetime(DatetimeUtil.format(d.getCreateDate()));
+                e.setArchive(true);
+                result.add(e);
             }
-            re.add(obj);
+        });
+
+        return result;
+    }
+
+    private String checkChildDir(int len, String path) {
+        int c = 0;
+        String re = null;
+        for(int i = len;i < path.length();i++) {
+            if(path.charAt(i) == '/') {
+                if(c > 0) return null;
+                else {
+                    c++;
+                    re = path.substring(len, i);
+                }
+            }
         }
 
         return re;

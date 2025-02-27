@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -37,4 +38,9 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
     Long selectIdByPath(@Param("userId") Long userId,
                         @Param("bucketId") Long bucketId,
                         @Param("path") String path);
+
+    @Select("select * from directory where user_id = #{userId} and bucket_id = #{bucketId} and path like concat(#{path}, '%')")
+    List<Directory> queryDirByPath(@Param("userId") Long userId,
+                                   @Param("bucketId") Long bucketId,
+                                   @Param("path") String path);
 }

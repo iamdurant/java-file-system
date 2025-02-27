@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * <p>
  * 文件表 Mapper 接口
@@ -25,4 +27,9 @@ public interface FileMapper extends BaseMapper<File> {
 
     @Select("select id from file where hash_value = #{md5}")
     Long selectFileIdByMd5(@Param("md5") String md5);
+
+    @Select("select * from file where user_id = #{userId} and bucket_id = #{bucketId} and directory_id = #{dirId}")
+    List<File> queryFilesByPath(@Param("userId") Long userId,
+                                        @Param("bucketId") Long bucketId,
+                                        @Param("dirId") Long dirId);
 }
