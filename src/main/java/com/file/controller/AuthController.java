@@ -3,6 +3,7 @@ package com.file.controller;
 import com.file.common.Result;
 import com.file.pojo.UserDTO;
 import com.file.service.IUserService;
+import com.file.util.BaseContext;
 import com.file.util.EncryptUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,6 +66,13 @@ public class AuthController {
         if(!((boolean) re[0])) return Result.fail(re[1].toString());
 
         return userService.resetPassword(userInfo);
+    }
+
+    @DeleteMapping("/logout")
+    @ApiOperation("退出登录")
+    public Result logout() {
+        if(BaseContext.getUserInfo() == null) return Result.fail("非法操作");
+        return userService.logout();
     }
 
     private Object[] checkUserInfo(UserDTO userInfo) {

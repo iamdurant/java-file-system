@@ -16,7 +16,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/auth.js")
                 .excludePathPatterns("/token.js")
                 .excludePathPatterns("/svg/**")
-                .excludePathPatterns("/auth/**")
+                .excludePathPatterns("/auth/code/register")
+                .excludePathPatterns("/auth/sighUp")
+                .excludePathPatterns("/auth/sighIn")
+                .excludePathPatterns("/auth/code/resetPass")
+                .excludePathPatterns("/auth/resetPass")
                 // Knife4j 相关路径
                 .excludePathPatterns("/doc.html")
                 .excludePathPatterns("/webjars/**")

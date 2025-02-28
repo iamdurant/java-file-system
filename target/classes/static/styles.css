@@ -190,6 +190,10 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .bucket-name {
@@ -211,7 +215,10 @@ body {
 }
 
 .actions {
-    padding: 16px 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 29px;
+    padding-bottom: 28px;
     background-color: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -222,6 +229,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    /* margin-top: -15px; */
 }
 
 .button {
@@ -808,6 +816,7 @@ input[type="checkbox"]:indeterminate::after {
 }
 
 .sidebar-title-left {
+    padding-left: 28px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -824,6 +833,7 @@ input[type="checkbox"]:indeterminate::after {
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    padding-top: 15px;
 }
 
 .button-icon:hover {

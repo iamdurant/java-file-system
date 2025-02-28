@@ -7,6 +7,7 @@ import com.file.mapper.UserMapper;
 import com.file.pojo.UserDTO;
 import com.file.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.file.util.BaseContext;
 import com.file.util.EncryptUtil;
 import com.file.util.JwtUtil;
 import com.file.util.MailUtil;
@@ -44,6 +45,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private final String registerCodeKeyPrefix = "register:code:";
 
     private final String resetPassCodeKeyPrefix = "resetPass:code:";
+
+    private final String tokenPrefix = "token:";
 
     @Override
     public Result getVerificationCode(String email) {
@@ -107,6 +110,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         cookie.setMaxAge(86400 * 7);
         resp.addCookie(cookie);
 
+        // 若存在其他设备登陆，则将其他设备踢下线
+        redis.delete(tokenPrefix + user.getId());
+        // 存储token
+        redis.opsForValue().set(tokenPrefix + user.getId(), token);
+
         return Result.ok("登陆成功");
     }
 
@@ -147,5 +155,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         redis.delete(resetPassCodeKeyPrefix + userInfo.getEmail());
 
         return Result.ok("密码重置成功");
+    }
+
+    @Override
+    public Result logout() {
+        redis.delete(tokenPrefix + BaseContext.getUserInfo().getId());
+        return Result.ok();
     }
 }

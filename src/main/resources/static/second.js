@@ -11,6 +11,8 @@ function initPathNavigation() {
 // 处理路径点击事件
 function handlePathClick(event) {
     const clickedText = event.target.textContent;
+
+
     if (clickedText === '/') {
         // 点击根目录，直接返回到根目录
         navigateToPath('');
@@ -23,18 +25,20 @@ function handlePathClick(event) {
 
     // 分割当前路径
     const pathParts = fullPath.split('/').filter(Boolean);
-    
     // 找到被点击的部分在路径中的位置
     const clickedIndex = pathParts.indexOf(clickedText);
+
     if (clickedIndex === -1) return;
 
     // 构建新的路径（包含到被点击部分为止）
     const newPath = pathParts.slice(0, clickedIndex + 1).join('/');
+
     navigateToPath(newPath);
 }
 
 // 导航到指定路径
 async function navigateToPath(targetPath) {
+
     currentPrefix = targetPath;
     updatePathDisplayWithLinks();
     await loadFiles();
@@ -42,6 +46,8 @@ async function navigateToPath(targetPath) {
 
 // 更新路径显示（带可点击链接）
 function updatePathDisplayWithLinks() {
+
+
     const pathDisplay = document.getElementById('currentPathDisplay');
     pathDisplay.innerHTML = ''; // 清空现有内容
 
@@ -53,6 +59,8 @@ function updatePathDisplayWithLinks() {
 
     // 分割并处理路径各部分
     const parts = currentPrefix.split('/').filter(Boolean);
+
+
     let currentPath = '';
 
     parts.forEach((part, index) => {
@@ -64,6 +72,7 @@ function updatePathDisplayWithLinks() {
 
         // 构建此部分的完整路径
         currentPath = parts.slice(0, index + 1).join('/');
+
         
         // 创建可点击的路径链接
         const link = createPathLink(part, () => navigateToPath(currentPath));
@@ -111,7 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // 覆盖原有的 updatePathDisplay 函数
 function updatePathDisplay() {
     const bucketDisplay = document.getElementById('currentBucketDisplay');
-    bucketDisplay.textContent = currentBucket || '未选择存储桶';
+
+
+    if (currentBucket) {
+        // 使用映射获取显示名称
+        bucketDisplay.textContent = bucketNameMap.get(currentBucket) || currentBucket;
+    } else {
+        bucketDisplay.textContent = '未选择存储桶';
+    }
     
     // 使用新的路径显示方式
     updatePathDisplayWithLinks();

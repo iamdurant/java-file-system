@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="picture.css">
+    <link rel="stylesheet" href="slide.css">
     <style>
         /* Logo 样式 */
         .logo-container {
@@ -408,6 +409,10 @@
         <!-- 左侧导航栏 -->
         <div class="sidebar">
             <div class="sidebar-header">
+                <!-- 添加侧边栏切换按钮 -->
+                <button id="sidebarToggleBtn" class="sidebar-toggle-btn" title="菜单">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <div class="logo-container">
                     <img src="svg/cloud.svg" alt="AnoCloud Logo" class="logo">
                 </div>
@@ -572,6 +577,7 @@
     <script src="second.js"></script>
     <script src="preview.js"></script>
     <script type="module" src="check_device.js"></script>
+    <script src="logout.js"></script>
 
     <!-- 在 body 末尾添加 -->
     <div class="picture-overlay">
@@ -583,5 +589,60 @@
         </div>
         <div class="picture-container"></div>
     </div>
+
+    <!-- 添加侧边栏结构 -->
+    <div id="slideSidebar" class="slide-sidebar">
+        <div class="slide-sidebar-header">
+            <h3 class="slide-sidebar-title">菜单</h3>
+            <button id="closeSidebarBtn" class="slide-sidebar-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="slide-sidebar-content">
+            <a href="#" class="slide-menu-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="#" class="slide-menu-item">
+                <i class="fas fa-cog"></i>
+                <span>设置</span>
+            </a>
+            <a href="#" class="slide-menu-item">
+                <i class="fas fa-question-circle"></i>
+                <span>帮助中心</span>
+            </a>
+            <a href="#" id="logoutBtn" class="slide-menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>退出登录</span>
+            </a>
+            
+            <!-- 存储空间信息 -->
+            <div class="storage-info">
+                <div class="storage-info-title">存储空间</div>
+                <div class="storage-progress">
+                    <div class="storage-progress-bar"></div>
+                </div>
+                <div class="storage-details">
+                    <span>已使用: 6.5 GB</span>
+                    <span>总容量: 10 GB</span>
+                </div>
+                <button id="requestStorageBtn" class="button" style="width: 100%; margin-top: 12px;">
+                    <i class="fas fa-plus"></i> 申请扩展存储空间
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加遮罩层 -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- 在其他脚本之前引入 -->
+    <script type="module" src="utils/download.js"></script>
+    <script src="upload.js"></script>
+    <script src="main.js"></script>
+    <script src="second.js"></script>
+    <script src="preview.js"></script>
+    <script src="slide.js"></script>
+    <script type="module" src="check_device.js"></script>
 </body>
 </html>

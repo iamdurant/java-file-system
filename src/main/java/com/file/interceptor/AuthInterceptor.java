@@ -4,7 +4,10 @@ import com.auth0.jwt.interfaces.Claim;
 import com.file.entity.User;
 import com.file.util.BaseContext;
 import com.file.util.JwtUtil;
+import com.file.util.SpringBeanUtil;
 import org.jetbrains.annotations.NotNull;
+
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +18,8 @@ import java.util.Date;
 import java.util.Map;
 
 public class AuthInterceptor implements HandlerInterceptor {
+    private final String tokenPrefix = "token:";
+
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         String token = null;
@@ -27,6 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         if(token == null) {
             // 未登录
+            response.setContentType("text/html; charset=utf-8");
             response.sendRedirect("/auth.html");
             return false;
         }
@@ -35,13 +41,24 @@ public class AuthInterceptor implements HandlerInterceptor {
         long exp = claims.get("exp").asDate().getTime();
         if(exp < new Date().getTime()) {
             // token已过期
+            response.setContentType("text/html; charset=utf-8");
+            response.sendRedirect("/auth.html");
+            return false;
+        }
+
+        Long userId = Long.valueOf(claims.get("userId").asString());
+        // 检查token是否被踢下线
+        StringRedisTemplate redis = SpringBeanUtil.getBean(StringRedisTemplate.class);
+        String storedToken = redis.opsForValue().get(tokenPrefix + userId);
+        if(storedToken == null || !storedToken.equals(token)) {
+            response.setContentType("text/html; charset=utf-8");
             response.sendRedirect("/auth.html");
             return false;
         }
 
         // 存储基本信息到ThreadLocal
         User user = new User();
-        user.setId(Long.valueOf(claims.get("userId").asString()));
+        user.setId(userId);
         user.setEmail(claims.get("email").asString());
         BaseContext.setUserInfo(user);
 

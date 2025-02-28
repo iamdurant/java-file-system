@@ -26,4 +26,6 @@ public interface IUserService extends IService<User> {
     Result getResetPassCode(String email);
 
     Result resetPassword(UserDTO userInfo);
+
+    Result logout();
 }
