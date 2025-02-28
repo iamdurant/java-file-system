@@ -2,6 +2,7 @@ package com.file.mapper;
 
 import com.file.entity.Directory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.file.pojo.SearchDirDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -43,4 +44,20 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
     List<Directory> queryDirByPath(@Param("userId") Long userId,
                                    @Param("bucketId") Long bucketId,
                                    @Param("path") String path);
+
+    @Select({
+            "<script>",
+            "select id, path from directory where user_id = #{userId}",
+            "and id in",
+            "<foreach item='item' separator=',' open='(' close=')' collection='dirIds'>",
+            "#{item}",
+            "</foreach>",
+            "</script>"
+
+    })
+    @Results({
+            @Result(property = "dirId", column = "id", javaType = Long.class),
+            @Result(property = "path", column = "path", javaType = String.class)
+    })
+    List<SearchDirDTO> queryDirs(@Param("userId") Long userId, @Param("dirIds") List<Long> dirIds);
 }

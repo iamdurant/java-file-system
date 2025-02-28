@@ -1,94 +1,89 @@
 package com.file.service.impl;
 
-import com.file.ThreadPool.SearchFilePool;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.file.common.Result;
 import com.file.common.SearchConstant;
+
+import com.file.entity.File;
+import com.file.mapper.BucketMapper;
+import com.file.mapper.DirectoryMapper;
+import com.file.mapper.FileMapper;
+import com.file.pojo.SearchBucketDTO;
+import com.file.pojo.SearchDirDTO;
 import com.file.pojo.SearchResult;
 import com.file.service.SearchService;
+import com.file.util.BaseContext;
 import com.file.util.DatetimeUtil;
-import io.minio.ListObjectsArgs;
-import io.minio.MinioClient;
 
-import io.minio.messages.Bucket;
-import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Map;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
-    private final MinioClient minCli;
+    private final FileMapper fileMapper;
 
-    private final SearchFilePool pool;
+    private final BucketMapper bucketMapper;
 
-    private final StringRedisTemplate redis;
+    private final DirectoryMapper directoryMapper;
 
     @Override
     @SneakyThrows
     public Result searchFile(String name) {
-        CopyOnWriteArrayList<SearchResult> result = new CopyOnWriteArrayList<>();
-        List<Bucket> buckets = minCli.listBuckets();
-        CountDownLatch latch = new CountDownLatch(buckets.size());
-        for (Bucket bucket : buckets) {
-            pool.submitTask(() -> {
-                String bucketRealName = redis.opsForValue().get(bucket.name());
-                if(bucketRealName == null || bucketRealName.isEmpty()) {
-                    log.error("bucket: [{}] 不存在名字映射", bucket.name());
-                }
+        Long userId = BaseContext.getUserInfo().getId();
+        List<SearchResult> result = new ArrayList<>();
+        List<File> files = fileMapper.selectList(new LambdaQueryWrapper<File>()
+                .eq(File::getUserId, userId)
+                .like(File::getName, "%" + name + "%"));
+        if(files == null || files.isEmpty()) return Result.ok(result);
 
-                Iterable<io.minio.Result<Item>> objects =
-                        minCli.listObjects(ListObjectsArgs
-                                .builder()
-                                .bucket(bucket.name())
-                                .recursive(true)
-                                .build());
-
-                for (io.minio.Result<Item> object : objects) {
-                    Item item;
-                    try {
-                        item = object.get();
-                    } catch (Exception e) {
-                        latch.countDown();
-                        throw new RuntimeException(e);
-                    }
-
-                    if(item != null && !item.isDir()) {
-                        String objName = item.objectName();
-                        int i = objName.lastIndexOf('/');
-                        String lastName = objName.substring(i + 1);
-                        if(!lastName.equals(".dir") && checkEqual(lastName, name)) {   // 匹配成功
-                            // 匹配高亮  kmp匹配
-                            int[] arr = pf(name + "/" + lastName);
-                            StringBuilder sb = getStringBuilder(name, arr, lastName);
-
-                            // 设置结果并添加
-                            SearchResult ele = new SearchResult();
-                            ele.setBucketRealName(bucketRealName);
-                            ele.setFileName(sb.toString());
-                            ele.setBucketName(bucket.name());
-                            if(i != -1) ele.setPrefix(objName.substring(0, i));
-                            else ele.setPrefix("");
-                            ele.setSize(item.size());   // 设置文件大小
-                            ele.setDatetime(DatetimeUtil.format(item.lastModified()));  // 设置时间
-
-                            result.add(ele);
-                        }
-                    }
-                }
-                latch.countDown();
-            });
+        List<Long> bucketIds = new ArrayList<>();
+        List<Long> dirIds = new ArrayList<>();
+        for (File f : files) {
+            bucketIds.add(f.getBucketId());
+            dirIds.add(f.getDirectoryId());
         }
 
-        latch.await(3, TimeUnit.SECONDS);
+        Map<Long, SearchBucketDTO> bucketMap = new HashMap<>();
+        Map<Long, String> dirMap = new HashMap<>();
+        List<SearchBucketDTO> buckets = bucketMapper.queryBuckets(userId, bucketIds);
+        for (SearchBucketDTO b : buckets) {
+            bucketMap.put(b.getBucketId(), b);
+        }
+        List<SearchDirDTO> dirs = directoryMapper.queryDirs(userId, dirIds);
+        for (SearchDirDTO d : dirs) {
+            dirMap.put(d.getDirId(), d.getPath());
+        }
+
+        for (File f : files) {
+            SearchResult re = new SearchResult();
+            re.setSize(f.getSize());
+            re.setDatetime(DatetimeUtil.format(f.getCreateDate()));
+            SearchBucketDTO dto = bucketMap.get(f.getBucketId());
+            re.setBucketRealName(dto.getBucketFakeName());
+            re.setBucketName(dto.getBucketRealName());
+            String path = dirMap.get(f.getDirectoryId());
+            path = path.isEmpty() ? "" : path.substring(0, path.length() - 1);
+            re.setPrefix(path);
+
+            // 高亮匹配
+            int[] pf = pf(name + "/" + f.getName());
+            StringBuilder sb = getStringBuilder(name, pf, f.getName());
+            re.setFileName(sb.toString());
+
+            result.add(re);
+        }
+
         return Result.ok(result);
     }
 
@@ -110,15 +105,6 @@ public class SearchServiceImpl implements SearchService {
         }
         if(l <= lastName.length() - 1) sb.append(lastName, l, lastName.length());
         return sb;
-    }
-
-    private boolean checkEqual(String text, String pattern) {
-        int[] arr = pf(pattern + "/" + text);
-        for(int len : arr) {
-            if(len == pattern.length()) return true;
-        }
-
-        return false;
     }
 
     /**

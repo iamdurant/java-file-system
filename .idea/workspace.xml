@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/task/CleanCacheTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/task/ScheduledTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/SearchBucketDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/SearchDirDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/File.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/SearchServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/SearchServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/BucketMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/BucketMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/SearchServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/SearchServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +178,7 @@
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
-      <workItem from="1740594556098" duration="44980000" />
+      <workItem from="1740594556098" duration="50725000" />
     </task>
     <servers />
   </component>
@@ -193,6 +197,15 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/file/service/impl/SearchServiceImpl.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.file.entity.User" memberName="email" />
