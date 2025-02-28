@@ -13,6 +13,7 @@ import com.file.mapper.FileMapper;
 import com.file.mapper.UserMapper;
 import com.file.pojo.*;
 import com.file.service.FileService;
+import com.file.task.CleanCacheTask;
 import com.file.util.BaseContext;
 import com.file.util.DatetimeUtil;
 import com.file.util.FileUtil;
@@ -502,6 +503,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                     long used = vo.getUsedSize() == null ? 0L : vo.getUsedSize();
                     if(used + in.available() > vo.getMaxStoreSize()) {
                         // 超出存储限制
+                        addCleanTask(fileName);
                         return false;
                     }
 
@@ -540,8 +542,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         }
 
         // clean cache
-        assert chunks != null;
-        cleanCache(chunks, fileName, dir);
+        addCleanTask(fileName);
 
         return true;
     }
@@ -552,16 +553,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         return com.file.common.Result.ok(vo);
     }
 
-    private void cleanCache(File[] chunks, String fileName, File dir) {
-        assert chunks != null;
-        for (File ch : chunks) {
-            boolean d = ch.delete();
-            if(!d) log.warn("删除失败，{}:{}", fileName, ch.getName());
-        }
-        boolean d = dir.delete();
-        if(!d) log.warn("文件临时目录删除失败，{}", fileName);
-
-        boolean completedFileDeleted = new File(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName).delete();
-        if(!completedFileDeleted) log.warn("{}上传完成，cache清除失败", fileName);
+    private void addCleanTask(String fileName) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1);
+        CleanCacheTask.addTask(calendar.getTime().getTime(), fileName);
     }
 }

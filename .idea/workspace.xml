@@ -5,22 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/StorageInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/task/CleanCacheTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/task/ScheduledTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/File.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/slide.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/slide.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/controller/FileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/controller/FileController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/UserMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/FileService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/FileService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/file/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/File.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/slide.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/slide.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +174,7 @@
       <workItem from="1740344195476" duration="6109000" />
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
-      <workItem from="1740594556098" duration="40933000" />
+      <workItem from="1740594556098" duration="44980000" />
     </task>
     <servers />
   </component>
