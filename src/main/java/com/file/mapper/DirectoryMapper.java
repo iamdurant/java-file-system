@@ -63,4 +63,7 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
 
     @Update("update directory set size = size + #{size} where id = #{dId}")
     void addStorageSize(@Param("dId") Long dId, @Param("size") Long size);
+
+    @Select("select path from directory where id = #{dirId}")
+    String selectPathById(@Param("dirId") Long dirId);
 }

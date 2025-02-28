@@ -45,4 +45,7 @@ public interface BucketMapper extends BaseMapper<Bucket> {
             @Result(property = "bucketFakeName", column = "bucket_fake_name", javaType = String.class)
     })
     List<SearchBucketDTO> queryBuckets(@Param("userId") Long userId, @Param("bucketIds") List<Long> bucketIds);
+
+    @Select("select bucket_real_name from bucket where id = #{bucketId}")
+    String selectRealNameById(@Param("bucketId") Long bucketId);
 }

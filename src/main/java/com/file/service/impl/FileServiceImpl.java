@@ -290,33 +290,33 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     @Override
     public String getFileUrl(UrlDTO dto) {
-        try {
-            Iterable<Result<Item>> objs = cli.listObjects(ListObjectsArgs
-                    .builder()
-                    .bucket(dto.getBucketName())
-                    .prefix(dto.getPrefix() + dto.getName())
-                    .build());
-            for (Result<Item> obj : objs) {
-                Item item = obj.get();
-                if(item.isDir()) {
-                    log.info("用户存在错误操作，尝试下载文件夹");
-                    return null;
-                }
-            }
-        } catch (Exception ignored) {}
+        Long userId = BaseContext.getUserInfo().getId();
+        Long bucketId = bucketMapper.selectIdByBucketRealName(userId, dto.getBucketName());
+        if(bucketId == null) return null;
+        Long dirId = dirMapper.selectIdByPath(userId, bucketId, dto.getPrefix());
+        if(dirId == null) return null;
+        com.file.entity.File file = fileMapper.selectOne(new LambdaQueryWrapper<com.file.entity.File>()
+                .eq(com.file.entity.File::getUserId, userId)
+                .eq(com.file.entity.File::getBucketId, bucketId)
+                .eq(com.file.entity.File::getDirectoryId, dirId)
+                .eq(com.file.entity.File::getName, dto.getName()));
+        if(file == null) return null;
+
+        if(file.getPointer() != null) {
+            com.file.entity.File origionFile = fileMapper.selectById(file.getPointer());
+            dto.setName(origionFile.getName());
+            dto.setBucketName(bucketMapper.selectRealNameById(origionFile.getBucketId()));
+            dto.setPrefix(dirMapper.selectPathById(origionFile.getDirectoryId()));
+        }
 
         try {
-            String url = cli.getPresignedObjectUrl(GetPresignedObjectUrlArgs
+            return cli.getPresignedObjectUrl(GetPresignedObjectUrlArgs
                     .builder()
                     .bucket(dto.getBucketName())
                     .object(dto.getPrefix() + dto.getName())
                     .method(Method.GET)
                     .expiry(1, TimeUnit.DAYS)
                     .build());
-            log.info("获取文件url: bucket: {}，object: {}" ,
-                    dto.getBucketName(),
-                    dto.getPrefix() + dto.getName());
-            return url;
         } catch (Exception e) {
             log.error("获取文件url出错: bucket: {}，object: {}" ,
                     dto.getBucketName(),

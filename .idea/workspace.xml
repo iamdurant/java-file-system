@@ -5,31 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_final_dir/AGA  - Wonderful U (Demo).flac" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/10" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/11" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/12" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/13" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/6" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/7" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file_system_chunk_tmp_dir/AGA  - Wonderful U (Demo).flac/9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/entity/Directory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/entity/Directory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/BucketMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/Directory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/Directory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/SearchServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/SearchServiceImpl.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,6 +174,7 @@
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
       <workItem from="1740594556098" duration="54702000" />
+      <workItem from="1740778580169" duration="1518000" />
     </task>
     <servers />
   </component>
@@ -200,8 +182,38 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="34ac4a19-be84-4c98-b7e7-c42ef59a9b5c" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="34ac4a19-be84-4c98-b7e7-c42ef59a9b5c">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
