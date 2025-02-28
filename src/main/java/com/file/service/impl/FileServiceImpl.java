@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,8 +42,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.File> implements FileService {
     private final MinioClient cli;
-
-    private final StringRedisTemplate redis;
 
     private final FileUploadThreadPool pool;
 
@@ -101,6 +98,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
             String dirName = checkChildDir(fileObj.getPrefix().length(), d.getPath());
             if(dirName != null) {
                 FileObj e = new FileObj();
+                e.setSize(d.getSize());
                 e.setName(dirName);
                 e.setDatetime(DatetimeUtil.format(d.getCreateDate()));
                 e.setArchive(true);
@@ -535,6 +533,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 // 插入
                 fileMapper.insert(entity);
                 userMapper.addStorageSize(userId, entity.getSize());
+                // 更新父级目录大小
+                prefix = prefix + "/";
+                for(int i = prefix.length() - 1;i >= 0;--i) {
+                    Long dId = dirMapper.selectIdByPath(userId, bucketId, prefix.substring(0, i + 1));
+                    if(prefix.charAt(i) == '/') dirMapper.addStorageSize(dId, entity.getSize());
+                }
             }
         } catch (Exception e) {
             log.warn("合并上传异常，文件：{}", fileName);

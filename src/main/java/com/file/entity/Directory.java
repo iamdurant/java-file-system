@@ -58,4 +58,9 @@ public class Directory implements Serializable {
      * 文件夹更新时间
      */
     private LocalDateTime updateDate;
+
+    /**
+     * 目录大小，单位：字节
+     */
+    private Long size;
 }

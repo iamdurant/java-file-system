@@ -60,4 +60,7 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
             @Result(property = "path", column = "path", javaType = String.class)
     })
     List<SearchDirDTO> queryDirs(@Param("userId") Long userId, @Param("dirIds") List<Long> dirIds);
+
+    @Update("update directory set size = size + #{size} where id = #{dId}")
+    void addStorageSize(@Param("dId") Long dId, @Param("size") Long size);
 }
