@@ -2,7 +2,8 @@ package com.file.mapper;
 
 import com.file.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.file.pojo.StorageInfoVO;
+import org.apache.ibatis.annotations.*;
 
 /**
  * <p>
@@ -14,5 +15,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+    @Select("select used_size, max_store_size from user where id = #{userId}")
+    @Results({
+            @Result(property = "usedSize", column = "used_size", javaType = Long.class),
+            @Result(property = "maxStoreSize", column = "max_store_size", javaType = Long.class)
+    })
+    StorageInfoVO queryUsedAndMaxById(@Param("userId") Long userId);
 
+    @Update("update user set used_size = used_size + #{size} where id = #{userId}")
+    void addStorageSize(@Param("userId") Long userId, @Param("size") Long size);
 }

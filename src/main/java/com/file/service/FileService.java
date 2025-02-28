@@ -80,4 +80,6 @@ public interface FileService extends IService<File> {
     Result checkFileChunkStatus(String bucketName, String prefix, String fileName);
 
     Result uploadFileInParts(MultipartFile chunk, String bucketName, String prefix, String fileName, Long cur, Long total);
+
+    Result getStorageInfo();
 }

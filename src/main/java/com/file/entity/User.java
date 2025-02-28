@@ -50,9 +50,9 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 存储空间大小，单位为MB，默认为1024
+     * 最大存储空间，单位为字节，默认1GB
      */
-    private Integer storeSize;
+    private Long maxStoreSize;
 
     /**
      * 用户是否注销
@@ -68,4 +68,9 @@ public class User implements Serializable {
      * 注销时间
      */
     private LocalDateTime deleteDate;
+
+    /**
+     * 已使用存储空间
+     */
+    private Long usedSize;
 }

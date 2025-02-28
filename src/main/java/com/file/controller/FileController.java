@@ -126,4 +126,10 @@ public class FileController {
                                     @RequestParam Long total) {
         return service.uploadFileInParts(chunk, bucketName, prefix, fileName, cur, total);
     }
+
+    @GetMapping("/storageInfo")
+    @ApiOperation("获取存储空间使用情况")
+    public Result getStorageInfo() {
+        return service.getStorageInfo();
+    }
 }

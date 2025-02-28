@@ -10,10 +10,8 @@ import com.file.entity.Directory;
 import com.file.mapper.BucketMapper;
 import com.file.mapper.DirectoryMapper;
 import com.file.mapper.FileMapper;
-import com.file.pojo.FileChunkVO;
-import com.file.pojo.FileObj;
-import com.file.pojo.RemoveFileDTO;
-import com.file.pojo.UrlDTO;
+import com.file.mapper.UserMapper;
+import com.file.pojo.*;
 import com.file.service.FileService;
 import com.file.util.BaseContext;
 import com.file.util.DatetimeUtil;
@@ -54,6 +52,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     private final DirectoryMapper dirMapper;
 
     private final FileMapper fileMapper;
+
+    private final UserMapper userMapper;
 
     @Override
     @SneakyThrows
@@ -439,6 +439,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     @Override
     @SneakyThrows
+    @Transactional
     public com.file.common.Result uploadFileInParts(MultipartFile chunk, String bucketName, String prefix, String fileName, Long cur, Long total) {
         File fileDir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
         if(!fileDir.exists()) {
@@ -496,6 +497,14 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 entity.setDirectoryId(dirId);
 
                 try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
+                    // 检查是否超出最大存储限制
+                    StorageInfoVO vo = userMapper.queryUsedAndMaxById(userId);
+                    long used = vo.getUsedSize() == null ? 0L : vo.getUsedSize();
+                    if(used + in.available() > vo.getMaxStoreSize()) {
+                        // 超出存储限制
+                        return false;
+                    }
+
                     entity.setSize((long) in.available());
                     // md5 hash，检查是否存在相同文件
                     byte[] allBytes = in.readAllBytes();
@@ -523,6 +532,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
                 // 插入
                 fileMapper.insert(entity);
+                userMapper.addStorageSize(userId, entity.getSize());
             }
         } catch (Exception e) {
             log.warn("合并上传异常，文件：{}", fileName);
@@ -530,6 +540,19 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         }
 
         // clean cache
+        assert chunks != null;
+        cleanCache(chunks, fileName, dir);
+
+        return true;
+    }
+
+    @Override
+    public com.file.common.Result getStorageInfo() {
+        StorageInfoVO vo = userMapper.queryUsedAndMaxById(BaseContext.getUserInfo().getId());
+        return com.file.common.Result.ok(vo);
+    }
+
+    private void cleanCache(File[] chunks, String fileName, File dir) {
         assert chunks != null;
         for (File ch : chunks) {
             boolean d = ch.delete();
@@ -540,7 +563,5 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
         boolean completedFileDeleted = new File(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName).delete();
         if(!completedFileDeleted) log.warn("{}上传完成，cache清除失败", fileName);
-
-        return true;
     }
 }

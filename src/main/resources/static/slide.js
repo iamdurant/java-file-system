@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
         slideSidebar.classList.add('active');
         sidebarOverlay.classList.add('active');
         document.body.style.overflow = 'hidden'; // 防止背景滚动
+        // 打开侧边栏时获取存储空间信息
+        updateStorageInfo();
     });
     
     // 关闭侧边栏的函数
@@ -50,25 +52,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 模拟存储空间使用情况（实际应该从API获取）
-    function updateStorageInfo() {
-        const storageUsed = 6.5; // GB
-        const storageTotal = 10; // GB
-        const storagePercentage = (storageUsed / storageTotal) * 100;
+    // 将字节转换为用户友好的格式（GB/MB）
+    function formatBytes(bytes) {
+        const GB = 1024 * 1024 * 1024;
+        const MB = 1024 * 1024;
         
-        // 更新进度条
-        const progressBar = document.querySelector('.storage-progress-bar');
-        if (progressBar) {
-            progressBar.style.width = `${storagePercentage}%`;
+        if (bytes >= GB) {
+            return (bytes / GB).toFixed(2) + ' GB';
+        } else {
+            return (bytes / MB).toFixed(2) + ' MB';
         }
-        
-        // 更新文本信息
-        const storageDetails = document.querySelector('.storage-details');
-        if (storageDetails) {
-            storageDetails.innerHTML = `
-                <span>已使用: ${storageUsed} GB</span>
-                <span>总容量: ${storageTotal} GB</span>
-            `;
+    }
+    
+    // 获取并更新存储空间使用情况
+    async function updateStorageInfo() {
+        try {
+            const response = await fetch('http://127.0.0.1:7654/file/storageInfo');
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                const usedSize = result.data.usedSize;
+                const maxStoreSize = result.data.maxStoreSize;
+                
+                // 计算使用百分比
+                const storagePercentage = (usedSize / maxStoreSize) * 100;
+                
+                // 更新进度条
+                const progressBar = document.querySelector('.storage-progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = `${storagePercentage}%`;
+                }
+                
+                // 更新文本信息
+                const storageDetails = document.querySelector('.storage-details');
+                if (storageDetails) {
+                    storageDetails.innerHTML = `
+                        <span>已使用: ${formatBytes(usedSize)}</span>
+                        <span>总容量: ${formatBytes(maxStoreSize)}</span>
+                    `;
+                }
+            } else {
+                console.error('获取存储空间信息失败:', result.message);
+            }
+        } catch (error) {
+            console.error('获取存储空间信息出错:', error);
         }
     }
     
