@@ -2,10 +2,8 @@ package com.file.mapper;
 
 import com.file.entity.File;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.file.pojo.MinObjDTO;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -61,4 +59,22 @@ public interface FileMapper extends BaseMapper<File> {
             "</script>"
     })
     void updateDeletedBatchByIds(@Param("logicDeleteIds") List<Long> logicDeleteIds);
+
+    @Update("update file set cited = cited + 1 where id = #{id}")
+    void addCitedById(@Param("id") Long id);
+
+    @Update("update file set cited = cited - 1 where id = #{id}")
+    void decreaseCitedById(@Param("id") Long id);
+
+    @Select("SELECT file.id as id, bucket.bucket_real_name AS a, directory.path AS b, file.name AS c FROM file " +
+            "LEFT JOIN bucket ON file.bucket_id = bucket.id " +
+            "LEFT JOIN directory ON file.directory_id = directory.id " +
+            "WHERE file.hash_value IS NOT NULL AND file.cited = 0 AND file.deleted = true")
+    @Results({
+            @Result(property = "fileId", column = "id", javaType = Long.class),
+            @Result(property = "bucketRealName", column = "a", javaType = String.class),
+            @Result(property = "path", column = "b", javaType = String.class),
+            @Result(property = "name", column = "c", javaType = String.class)
+    })
+    List<MinObjDTO> queryEmptyCitedOfSource();
 }

@@ -83,4 +83,9 @@ public class File implements Serializable {
      * 逻辑删除
      */
     private Boolean deleted;
+
+    /**
+     * 被引用次数
+     */
+    private Integer cited;
 }

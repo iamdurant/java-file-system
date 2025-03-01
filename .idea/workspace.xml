@@ -5,22 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/DirSizeDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/task/CleanFileFromMinIOTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/file/pojo/MinObjDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/entity/File.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/entity/File.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/DirectoryMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/mapper/FileMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/mapper/FileMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/file/task/ScheduledTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/task/ScheduledTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/File.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/DirectoryMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/mapper/FileMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/mapper/FileMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask$Task.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask$Task.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -185,7 +180,7 @@
       <workItem from="1740358665591" duration="17226000" />
       <workItem from="1740420284127" duration="45826000" />
       <workItem from="1740594556098" duration="54702000" />
-      <workItem from="1740778580169" duration="14187000" />
+      <workItem from="1740778580169" duration="18880000" />
     </task>
     <servers />
   </component>
@@ -238,8 +233,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java</url>
-          <line>198</line>
-          <option name="timeStamp" value="4" />
+          <line>458</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

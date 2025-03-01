@@ -1274,8 +1274,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="293" parent="1" name="file_sys">
       <Current>1</Current>
-      <IntrospectionTimestamp>2025-03-01.17:15:32</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2025-03-01.01:15:32</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2025-03-02.07:11:27</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2025-03-01.15:11:27</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="294" parent="1" name="jasper">
@@ -1331,7 +1331,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <column id="306" parent="302" name="id">
-      <AutoIncrement>16</AutoIncrement>
+      <AutoIncrement>17</AutoIncrement>
       <Comment>存储桶id</Comment>
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
@@ -1384,7 +1384,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="315" parent="303" name="id">
-      <AutoIncrement>36</AutoIncrement>
+      <AutoIncrement>42</AutoIncrement>
       <Comment>文件夹id</Comment>
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
@@ -1437,7 +1437,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="324" parent="304" name="id">
-      <AutoIncrement>33</AutoIncrement>
+      <AutoIncrement>66</AutoIncrement>
       <Comment>文件id</Comment>
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
@@ -1500,79 +1500,86 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <index id="335" parent="304" name="PRIMARY">
+    <column id="335" parent="304" name="cited">
+      <Comment>被引用次数</Comment>
+      <DasType>int|0s</DasType>
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>12</Position>
+    </column>
+    <index id="336" parent="304" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="336" parent="304" name="PRIMARY">
+    <key id="337" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="337" parent="305" name="id">
-      <AutoIncrement>5</AutoIncrement>
+    <column id="338" parent="305" name="id">
+      <AutoIncrement>6</AutoIncrement>
       <Comment>用户id</Comment>
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="338" parent="305" name="email">
+    <column id="339" parent="305" name="email">
       <Comment>邮箱</Comment>
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="339" parent="305" name="salt">
+    <column id="340" parent="305" name="salt">
       <Comment>盐</Comment>
       <DasType>varchar(64)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="340" parent="305" name="password">
+    <column id="341" parent="305" name="password">
       <Comment>string加密后的base64编码</Comment>
       <DasType>varchar(256)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="341" parent="305" name="max_store_size">
+    <column id="342" parent="305" name="max_store_size">
       <Comment>最大存储限制，字节，默认1GB</Comment>
       <DasType>bigint|0s</DasType>
       <DefaultExpression>1073741824</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="342" parent="305" name="deleted">
+    <column id="343" parent="305" name="deleted">
       <Comment>用户是否注销</Comment>
       <DasType>tinyint(1)|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="343" parent="305" name="create_date">
+    <column id="344" parent="305" name="create_date">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="344" parent="305" name="delete_date">
+    <column id="345" parent="305" name="delete_date">
       <Comment>注销时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="345" parent="305" name="used_size">
+    <column id="346" parent="305" name="used_size">
       <Comment>已使用存储空间，字节</Comment>
       <DasType>bigint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <index id="346" parent="305" name="PRIMARY">
+    <index id="347" parent="305" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="347" parent="305" name="PRIMARY">
+    <key id="348" parent="305" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

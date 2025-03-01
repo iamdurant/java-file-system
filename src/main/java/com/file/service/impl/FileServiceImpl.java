@@ -189,6 +189,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 // 指针
                 realDeleteIds.add(f.getId());
                 CleanFileFromMinIOTask.addTask(dto.getBucketName(), dto.getPrefix(), f.getName());
+                // 减少源被引用次数
+                fileMapper.decreaseCitedById(f.getPointer());
             }
             totalDeletedSize += f.getSize();
             set.remove(f.getName());
@@ -527,6 +529,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                     if(fId != null) {
                         // 存在相同文件，无需上传，保存引用
                         entity.setPointer(fId);
+                        // 更新被引用次数
+                        fileMapper.addCitedById(fId);
                     } else {
                         // 上传
                         String prefixAndName = !prefix.isEmpty() ?
@@ -573,7 +577,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     private void addCleanTask(String fileName) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 1);
+        calendar.add(Calendar.SECOND, 3);
         CleanCacheTask.addTask(BaseContext.getUserInfo().getId(), calendar.getTime().getTime(), fileName);
     }
 }
