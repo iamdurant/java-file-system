@@ -38,13 +38,13 @@ public class FileConstant {
         File tmp = new File(CHUNK_TMP_DIR);
         if(!tmp.exists()) {
             boolean done = tmp.mkdir();
-            if(!done) log.info("chunk临时目录创建失败");
+            if(!done) log.error("chunk临时目录创建失败");
         }
 
         File fi = new File(CHUNK_FINAL_DIR);
         if(!fi.exists()) {
             boolean done = fi.mkdir();
-            if(!done) log.info("chunk临时目录创建失败");
+            if(!done) log.error("chunk临时目录创建失败");
         }
     }
 }

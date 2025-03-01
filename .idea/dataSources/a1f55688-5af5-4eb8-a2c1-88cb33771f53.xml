@@ -1274,8 +1274,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="293" parent="1" name="file_sys">
       <Current>1</Current>
-      <IntrospectionTimestamp>2025-03-01.13:03:34</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2025-02-28.21:03:34</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2025-03-01.14:10:22</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2025-02-28.22:10:22</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="294" parent="1" name="jasper">
@@ -1556,6 +1556,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <column id="344" parent="305" name="used_size">
       <Comment>已使用存储空间，字节</Comment>
       <DasType>bigint|0s</DasType>
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
     <index id="345" parent="305" name="PRIMARY">

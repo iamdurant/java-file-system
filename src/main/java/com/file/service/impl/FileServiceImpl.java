@@ -560,6 +560,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     private void addCleanTask(String fileName) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 1);
-        CleanCacheTask.addTask(calendar.getTime().getTime(), fileName);
+        CleanCacheTask.addTask(BaseContext.getUserInfo().getId(), calendar.getTime().getTime(), fileName);
     }
 }

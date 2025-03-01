@@ -13,28 +13,41 @@ import java.util.List;
 public class ScheduledTask {
     @Scheduled(cron = "0 */10 * * * ?")  // 每十分钟执行一次清理
     public void cleanCache() {
-        List<String> files = CleanCacheTask.sortAndGetCanCleanFile();
-        for (String f : files) {
+        List<CleanCacheTask.Task> files = CleanCacheTask.sortAndGetCanCleanFile();
+        for (CleanCacheTask.Task t : files) {
+            String f = t.fileName;
             // 清理分片
+            boolean done = true;
             File tmpDir = new File(FileConstant.CHUNK_TMP_DIR + "/" + f);
             if(tmpDir.exists()) {
                 File[] chunks = tmpDir.listFiles();
                 if(chunks != null) {
                     for (File chunk : chunks) {
                         boolean deleted = chunk.delete();
-                        if(!deleted) log.warn("{} 清理失败", FileConstant.CHUNK_TMP_DIR + "/" + f + "/" + chunk.getName());
+                        if(!deleted) {
+                            log.warn("{} 清理失败", FileConstant.CHUNK_TMP_DIR + "/" + f + "/" + chunk.getName());
+                            done = false;
+                        }
                     }
                 }
                 boolean tmpDirDeleted = tmpDir.delete();
-                if(!tmpDirDeleted) log.warn("文件夹 {} 清理失败", tmpDir.getAbsolutePath());
+                if(!tmpDirDeleted) {
+                    done = false;
+                    log.warn("文件夹 {} 清理失败", tmpDir.getAbsolutePath());
+                }
             }
 
             // 清理合并后的文件
             File finalFile = new File(FileConstant.CHUNK_FINAL_DIR + "/" + f);
             if(finalFile.exists()) {
                 boolean deleted = finalFile.delete();
-                if(!deleted) log.warn("{} 清理失败", FileConstant.CHUNK_FINAL_DIR + "/" + f);
+                if(!deleted) {
+                    done = false;
+                    log.warn("{} 清理失败", FileConstant.CHUNK_FINAL_DIR + "/" + f);
+                }
             }
+
+            if(done) CleanCacheTask.removeFile(t.userId, f);
         }
     }
 }
