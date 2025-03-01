@@ -66,4 +66,7 @@ public interface DirectoryMapper extends BaseMapper<Directory> {
 
     @Select("select path from directory where id = #{dirId}")
     String selectPathById(@Param("dirId") Long dirId);
+
+    @Select("select size from directory where user_id = #{userId} and bucket_id = #{bucketId} and path = #{path}")
+    Long selectSizeByPath(@Param("userId") Long userId, @Param("bucketId") Long bucketId, @Param("path") String path);
 }

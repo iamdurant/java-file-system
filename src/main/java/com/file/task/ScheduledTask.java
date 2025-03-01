@@ -1,16 +1,22 @@
 package com.file.task;
 
 import com.file.common.FileConstant;
+import io.minio.MinioClient;
+import io.minio.RemoveObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
 
 @Component
 @Slf4j
 public class ScheduledTask {
+    @Resource
+    private MinioClient minCli;
+
     @Scheduled(cron = "0 */10 * * * ?")  // 每十分钟执行一次清理
     public void cleanCache() {
         List<CleanCacheTask.Task> files = CleanCacheTask.sortAndGetCanCleanFile();
@@ -48,6 +54,26 @@ public class ScheduledTask {
             }
 
             if(done) CleanCacheTask.removeFile(t.userId, f);
+        }
+    }
+
+    @Scheduled(cron = "0 */1 * * * ?")  // 每一分钟执行一次清理
+    public void cleanFile() {
+        List<CleanFileFromMinIOTask.Task> tasks = CleanFileFromMinIOTask.getCanConsume();
+        for (CleanFileFromMinIOTask.Task t : tasks) {
+            boolean deleted = true;
+            try {
+                minCli.removeObject(RemoveObjectArgs
+                        .builder()
+                        .bucket(t.bucketRealName)
+                        .object(t.path + t.name)
+                        .build());
+            } catch (Exception e) {
+                deleted = false;
+                log.error("删除minio文件异常，bucket：{} file：{}", t.bucketRealName, t.path + t.name);
+            }
+
+            if(deleted) CleanFileFromMinIOTask.remove(t);
         }
     }
 }

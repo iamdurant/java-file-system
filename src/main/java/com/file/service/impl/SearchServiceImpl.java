@@ -44,7 +44,8 @@ public class SearchServiceImpl implements SearchService {
         List<SearchResult> result = new ArrayList<>();
         List<File> files = fileMapper.selectList(new LambdaQueryWrapper<File>()
                 .eq(File::getUserId, userId)
-                .like(File::getName, "%" + name + "%"));
+                .like(File::getName, "%" + name + "%")
+                .eq(File::getDeleted, false));
         if(files == null || files.isEmpty()) return Result.ok(result);
 
         List<Long> bucketIds = new ArrayList<>();

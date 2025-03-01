@@ -78,4 +78,9 @@ public class File implements Serializable {
      * 文件夹更新时间
      */
     private LocalDateTime updateDate;
+
+    /**
+     * 逻辑删除
+     */
+    private Boolean deleted;
 }

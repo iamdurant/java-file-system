@@ -14,13 +14,13 @@ import com.file.mapper.UserMapper;
 import com.file.pojo.*;
 import com.file.service.FileService;
 import com.file.task.CleanCacheTask;
+import com.file.task.CleanFileFromMinIOTask;
 import com.file.util.BaseContext;
 import com.file.util.DatetimeUtil;
 import com.file.util.FileUtil;
 import io.minio.*;
-
 import io.minio.http.Method;
-import io.minio.messages.Item;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -165,38 +165,52 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
 
     @Override
     @SneakyThrows
+    @Transactional
     public Boolean removeFile(RemoveFileDTO dto) {
-        List<String> files = dto.getFiles();
-        String prefix = dto.getPrefix();
-        files.replaceAll(s -> prefix + s);
+        Long userId = BaseContext.getUserInfo().getId();
+        Long bucketId = bucketMapper.selectIdByBucketRealName(userId, dto.getBucketName());
+        Long dirId = dirMapper.selectIdByPath(userId, bucketId, dto.getPrefix());
 
-        for (String s : files) {
-            if (s.endsWith("/")) {
-                // 文件夹
-                Iterable<Result<Item>> removed = cli.listObjects(
-                        ListObjectsArgs
-                                .builder()
-                                .bucket(dto.getBucketName())
-                                .prefix(s)
-                                .recursive(true)
-                                .build()
-                );
-                for (Result<Item> itemResult : removed) {
-                    cli.removeObject(
-                            RemoveObjectArgs
-                                    .builder()
-                                    .bucket(dto.getBucketName())
-                                    .object(itemResult.get().objectName())
-                                    .build()
-                    );
-                }
+        Set<String> set = new HashSet<>(dto.getFiles());
+        List<com.file.entity.File> files = fileMapper.selectFilesByNames(
+                userId,
+                bucketId,
+                dirId,
+                dto.getFiles());
+
+        long totalDeletedSize = 0;
+        List<Long> logicDeleteIds = new ArrayList<>();
+        List<Long> realDeleteIds = new ArrayList<>();
+        for (com.file.entity.File f : files) {
+            if(f.getPointer() == null) {
+                // 源
+                logicDeleteIds.add(f.getId());
             } else {
-                // 文件
-                cli.removeObject(RemoveObjectArgs
-                        .builder()
-                        .bucket(dto.getBucketName())
-                        .object(s)
-                        .build());
+                // 指针
+                realDeleteIds.add(f.getId());
+                CleanFileFromMinIOTask.addTask(dto.getBucketName(), dto.getPrefix(), f.getName());
+            }
+            totalDeletedSize += f.getSize();
+            set.remove(f.getName());
+        }
+        // 批量更新
+        if(!logicDeleteIds.isEmpty()) fileMapper.updateDeletedBatchByIds(logicDeleteIds);
+        // 批量删除
+        if(!realDeleteIds.isEmpty()) fileMapper.deleteBatchIds(realDeleteIds);
+
+        // 处理父级文件夹大小
+        String path = dto.getPrefix();
+        for(int i = path.length() - 1;i >= 0;--i) {
+            Long dId = dirMapper.selectIdByPath(userId, bucketId, path.substring(0, i + 1));
+            if(path.charAt(i) == '/') dirMapper.addStorageSize(dId, totalDeletedSize);
+        }
+
+        // set中剩下的是文件夹，处理文件夹
+        for (String dir : set) {
+            Long size = dirMapper.selectSizeByPath(userId, bucketId, dto.getPrefix() + dir + "/");
+            if(size == null || size == 0) {
+                // 目录中不存在文件
+                CleanFileFromMinIOTask.addTask(dto.getBucketName(), dto.getPrefix() + dir + "/", ".dir");
             }
         }
 
