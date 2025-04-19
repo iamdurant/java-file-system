@@ -434,7 +434,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
         chunkVO.setPrefix(prefix);
         chunkVO.setFineName(fileName);
 
-        File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        File dir = new File(FileConstant.CHUNK_TMP_DIR + File.separator + fileName);
         if(!dir.exists()) {
             // 文件不存在，也没有chunk存在
             chunkVO.setChunkIndex(0L);
@@ -456,7 +456,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     @SneakyThrows
     @Transactional
     public com.file.common.Result uploadFileInParts(MultipartFile chunk, String bucketName, String prefix, String fileName, Long cur, Long total) {
-        File fileDir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        File fileDir = new File(FileConstant.CHUNK_TMP_DIR + File.separator + fileName);
         if(!fileDir.exists()) {
             boolean b = fileDir.mkdir();
             if(!b) {
@@ -465,7 +465,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
             }
         }
 
-        File part = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName + "\\" + cur);
+        File part = new File(FileConstant.CHUNK_TMP_DIR + File.separator + fileName + File.separator + cur);
         boolean created = part.createNewFile();
         if(!created) log.warn("创建分片文件失败：{}:{}", fileName, cur);
         try (FileOutputStream outputStream = new FileOutputStream(part)) {
@@ -483,9 +483,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
     }
 
     private boolean mergeChunks(String bucketName, String prefix, String fileName) {
-        File dir = new File(FileConstant.CHUNK_TMP_DIR + "\\" + fileName);
+        File dir = new File(FileConstant.CHUNK_TMP_DIR + File.separator + fileName);
         File[] chunks = dir.listFiles();
-        try (FileOutputStream out = new FileOutputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
+        try (FileOutputStream out = new FileOutputStream(FileConstant.CHUNK_FINAL_DIR + File.separator + fileName)) {
             if(chunks != null) {
                 Arrays.sort(chunks, Comparator.comparing(n -> Integer.valueOf(n.getName())));
                 for(File ch : chunks) {
@@ -511,7 +511,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
                 Long dirId = dirMapper.selectIdByPath(userId, bucketId, path);
                 entity.setDirectoryId(dirId);
 
-                try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + "\\" + fileName)) {
+                try (FileInputStream in = new FileInputStream(FileConstant.CHUNK_FINAL_DIR + File.separator + fileName)) {
                     // 检查是否超出最大存储限制
                     StorageInfoVO vo = userMapper.queryUsedAndMaxById(userId);
                     long used = vo.getUsedSize() == null ? 0L : vo.getUsedSize();

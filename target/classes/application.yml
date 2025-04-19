@@ -28,8 +28,8 @@ spring:
             required: true
   # mysql 配置
   datasource:
-    url: jdbc:mysql://172.24.192.134:3306/file_sys?serverTimezone=UTC
-    username: jasper
+    url: jdbc:mysql://127.0.0.1:3306/file_sys?serverTimezone=UTC
+    username: root
     password: pubgM666
     driver-class-name: com.mysql.cj.jdbc.Driver
 
