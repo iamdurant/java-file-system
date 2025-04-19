@@ -1,4 +1,4 @@
 file_system_chunk_tmp_dir/
 file_system_chunk_final_dir/
-target/
+target/**
 .idea/
