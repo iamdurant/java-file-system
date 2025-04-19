@@ -5,41 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/file_sys.isUt1A.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a1f55688-5af5-4eb8-a2c1-88cb33771f53/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/file/service/impl/FileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/common/FileConstant.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/common/FileConstant.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/common/Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/common/Result.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/config/MinIOConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/config/MinIOConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/Bucket.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/Bucket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/Directory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/Directory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/File.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/interceptor/AuthInterceptor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/FileChunkVO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/FileChunkVO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/FileObj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/FileObj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/RemoveFileDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/RemoveFileDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchBucketDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchBucketDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchDirDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchDirDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchResult.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/SearchResult.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/StorageInfoVO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/StorageInfoVO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/UrlDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/UrlDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/pojo/UserDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/pojo/UserDTO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/FileServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/CleanCacheTask.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/file/task/ScheduledTask.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +39,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.FileServiceImpl.executor": "Run",
     "Maven.file_service [clean].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -95,7 +63,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -114,19 +82,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.file.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FileServiceImpl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.file.service.impl.FileServiceImpl" />
-      <module name="file_service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.file.service.impl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -176,7 +131,6 @@
         <item itemvalue="JAR Application.j4minio.jar" />
         <item itemvalue="Application.ScheduledTask" />
         <item itemvalue="Application.FileUtil" />
-        <item itemvalue="Application.FileServiceImpl" />
         <item itemvalue="Application.DatetimeUtil" />
       </list>
     </recent_temporary>
@@ -190,6 +144,9 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="88215bb1-24a5-4c55-8c62-4233739c2d85" name="Changes" comment="" />
@@ -222,7 +179,7 @@
       <workItem from="1744688931153" duration="638000" />
       <workItem from="1745047517321" duration="398000" />
       <workItem from="1745051629731" duration="53000" />
-      <workItem from="1745100060293" duration="1193000" />
+      <workItem from="1745100060293" duration="3752000" />
     </task>
     <servers />
   </component>
@@ -276,5 +233,9 @@
         <PinnedItemInfo parentTag="com.file.entity.User" memberName="email" />
       </pinned-members>
     </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

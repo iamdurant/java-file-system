@@ -216,6 +216,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, com.file.entity.Fil
             }
         }
 
+        // 更新用户存储容量
+        userMapper.updateUsedSize(userId, totalDeletedSize);
+
         return true;
     }
 

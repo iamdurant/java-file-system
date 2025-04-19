@@ -24,4 +24,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Update("update user set used_size = used_size + #{size} where id = #{userId}")
     void addStorageSize(@Param("userId") Long userId, @Param("size") Long size);
+
+    @Update("update user set used_size = used_size - #{totalDeletedSize} where id = #{userId}")
+    void updateUsedSize(@Param("userId") Long userId, @Param("totalDeletedSize") long totalDeletedSize);
 }
